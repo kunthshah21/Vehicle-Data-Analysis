@@ -118,7 +118,7 @@ CarData convertToCarData(const vector<string>& tokens) {
 }
 
 int main() {
-    ifstream file("car_data.csv");
+    ifstream file("car_prices.csv");
     if (!file.is_open()) {
         cerr << "Error opening file." << endl;
         return 1;
