@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
 #include <vector>
+#include <string>
 
 using namespace std;
 
-// Define the Vehicle structure
-struct Vehicle {
+// Define a structure to hold the data for each row
+struct CarData {
     int year;
     string make;
     string model;
@@ -16,163 +16,129 @@ struct Vehicle {
     string transmission;
     string vin;
     string state;
-    int condition;
-    int odometer;
+    float condition;
+    float odometer;
     string color;
     string interior;
     string seller;
-    int mmr;
-    int sellingPrice;
+    float mmr;
+    float sellingPrice;
     string saleDate;
-
-    // Corrected constructor
-    Vehicle(int y, const string& ma, const string& md, const string& t, const string& b, const string& trans,
-            const string& v, const string& s, int cond, int odo, const string& col, const string& in,
-            const string& sell, int m, int sp, const string& sd) : 
-            year(y), make(ma), model(md), trim(t), body(b), transmission(trans),
-            vin(v), state(s), condition(cond), odometer(odo), color(col), interior(in),
-            seller(sell), mmr(m), sellingPrice(sp), saleDate(sd) {}
 };
 
-// Singly Linked List Node
+// Define a node structure for the Singly Linked List
 struct Node {
-    Vehicle data;
+    CarData data;
     Node* next;
-    Node(const Vehicle& v) : data(v), next(nullptr) {}
 };
 
-// Singly Linked List
-class LinkedList {
+// Define a class for the Singly Linked List
+class SLL {
 public:
-    LinkedList() : head(nullptr) {}
-
-    void append(const Vehicle& v) {
-        if (!head) {
-            head = new Node(v);
-            return;
-        }
+    SLL() : head(nullptr) {}
+    ~SLL() {
         Node* current = head;
-        while (current->next) {
-            current = current->next;
-        }
-        current->next = new Node(v);
-    }
-
-    // Print details of the vehicle at the specified index
-    void printVehicleDetails(int index) {
-        Node* current = head;
-        int count = 0;
         while (current) {
-            if (count == index) {
-                cout << "Details of the " << index + 1 << "th vehicle:" << endl;
-                cout << "Year: " << current->data.year << endl;
-                cout << "Make: " << current->data.make << endl;
-                cout << "Model: " << current->data.model << endl;
-                // Print other fields as needed...
-                return;
+            Node* next = current->next;
+            delete current;
+            current = next;
+        }
+        head = nullptr;
+    }
+    void insert(const CarData& data) {
+        Node* newNode = new Node{data, nullptr};
+        if (!head) {
+            head = newNode;
+        } else {
+            Node* current = head;
+            while (current->next) {
+                current = current->next;
             }
+            current->next = newNode;
+        }
+    }
+    void display(int index) {
+        Node* current = head;
+        int currentIndex = 0;
+         while (current && currentIndex < index) {
             current = current->next;
-            count++;
+            currentIndex++;
         }
-        cout << "Vehicle at index " << index << " not found!" << endl;
-    }
-
-    // Destructor to clean up memory
-    ~LinkedList() {
-        while (head) {
-            Node* temp = head;
-            head = head->next;
-            delete temp;
+        if (current && currentIndex == index) {
+            displayCarData(current->data);
+        } else {
+            cout << "Index out of range." << endl;
         }
     }
 
-private:
+    private:
     Node* head;
+
+    void displayCarData(const CarData& data) {
+        cout << "Year: " << data.year << ", Make: " << data.make << ", Model: " << data.model
+             << ", Trim: " << data.trim << ", Body: " << data.body << ", Transmission: " << data.transmission
+             << ", VIN: " << data.vin << ", State: " << data.state << ", Condition: " << data.condition
+             << ", Odometer: " << data.odometer << ", Color: " << data.color << ", Interior: " << data.interior
+             << ", Seller: " << data.seller << ", MMR: " << data.mmr << ", Selling Price: " << data.sellingPrice
+             << ", Sale Date: " << data.saleDate << endl;
+    }
 };
 
-// Vector wrapper
-class VectorWrapper {
-public:
-    void add(const Vehicle& v) {
-        vehicles.push_back(v);
+// Function to parse CSV line
+vector<string> parseCSVLine(const string& line) {
+    vector<string> tokens;
+    stringstream ss(line);
+    string token;
+    while (getline(ss, token, ',')) {
+        tokens.push_back(token);
     }
+    return tokens;
+}
 
-    // Print details of the vehicle at the specified index
-    void printVehicleDetails(int index) {
-        if (index >= 0 && index < vehicles.size()) {
-            cout << "Details of the " << index + 1 << "th vehicle:" << endl;
-            cout << "Year: " << vehicles[index].year << endl;
-            cout << "Make: " << vehicles[index].make << endl;
-            cout << "Model: " << vehicles[index].model << endl;
-            // Print other fields as needed...
-        } else {
-            cout << "Vehicle at index " << index << " not found!" << endl;
-        }
-    }
-
-private:
-    vector<Vehicle> vehicles;
-};
-
-// Function to parse CSV and populate the hybrid structure
-void loadCSV(const string& filename, LinkedList& linkedList, VectorWrapper& vectorWrapper) {
-    ifstream file(filename);
-    string line;
-
-    // Skip header
-    getline(file, line);
-
-    while (getline(file, line)) {
-        cout << "Reading line: " << line << endl; // Debug output
-
-        stringstream ss(line);
-        string token;
-        vector<string> tokens;
-
-        while (getline(ss, token, ',')) {
-            tokens.push_back(token);
-        }
-
-        if (tokens.size() >= 16) { // Assuming all fields are present
-            int year = stoi(tokens[0]);
-            string make = tokens[1];
-            string model = tokens[2];
-            string trim = tokens[3];
-            string body = tokens[4];
-            string transmission = tokens[5];
-            string vin = tokens[6];
-            string state = tokens[7];
-            int condition = stoi(tokens[8]);
-            int odometer = stoi(tokens[9]);
-            string color = tokens[10];
-            string interior = tokens[11];
-            string seller = tokens[12];
-            int mmr = stoi(tokens[13]);
-            int sellingPrice = stoi(tokens[14]);
-            string saleDate = tokens[15];
-
-            Vehicle vehicle(year, make, model, trim, body, transmission, vin, state,
-                            condition, odometer, color, interior, seller, mmr, sellingPrice, saleDate);
-            linkedList.append(vehicle);
-            vectorWrapper.add(vehicle);
-        } else {
-            cout << "Incomplete data in line: " << line << endl; // Debug output
-        }
-    }
-    cout << "Data loading complete." << endl; // Debug output
+// Function to convert CSV line tokens to CarData structure
+CarData convertToCarData(const vector<string>& tokens) {
+    CarData data;
+    data.year = stoi(tokens[0]);
+    data.make = tokens[1];
+    data.model = tokens[2];
+    data.trim = tokens[3];
+    data.body = tokens[4];
+    data.transmission = tokens[5];
+    data.vin = tokens[6];
+    data.state = tokens[7];
+    data.condition = stof(tokens[8]);
+    data.odometer = stof(tokens[9]);
+    data.color = tokens[10];
+    data.interior = tokens[11];
+    data.seller = tokens[12];
+    data.mmr = stof(tokens[13]);
+    data.sellingPrice = stof(tokens[14]);
+    data.saleDate = tokens[15];
+    return data;
 }
 
 int main() {
-    LinkedList linkedList;
-    VectorWrapper vectorWrapper;
+    ifstream file("car_data.csv");
+    if (!file.is_open()) {
+        cerr << "Error opening file." << endl;
+        return 1;
+    }
 
-    // Load data from CSV
-    loadCSV("car_prices.csv", linkedList, vectorWrapper);
+    string line;
+    getline(file, line); // Ignore the header line
 
-    // Print details of the 3rd vehicle object
-    cout << "Printing details of the 3rd vehicle:" << endl; // Debug output
-    linkedList.printVehicleDetails(2); // Index 2 represents the 3rd vehicle
-    vectorWrapper.printVehicleDetails(2);
+    SLL carList;
+
+    while (getline(file, line)) {
+        vector<string> tokens = parseCSVLine(line);
+        CarData carData = convertToCarData(tokens);
+        carList.insert(carData);
+    }
+    cout << "Data from CSV file inserted into Singly Linked List successfully." << endl;
+    
+    int indexToDisplay = 5;
+    cout << "Displaying data at index " << indexToDisplay << ":" << endl;
+    carList.display(indexToDisplay);
 
     return 0;
 }
