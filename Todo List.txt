@@ -1,2 +1,20 @@
-TODO: Sort based on year 
-TODO: Sort in various buckets based on same make -> Tesla, Rolls-Royce, Saab, Saturn, Scion, smart, Subaru, Suzuki, Oldsmobile, Plymouth, Ram, Pontiac, Kia, BMW, Volvo, Audi, Chevrolet, Ford, Cadillac, Acura, Lexus, Hyundai, Nissan, Buick, Infiniti, Land Rover, Mazda, MINI, Mercedes-Benz, Jeep, Mitsubishi, Toyota, Volkswagen, Porsche, Subaru, Nissan, Aston Martin, Bentley, Chevrolet, Chrysler, Daewoo, Dodge, Ferrari, FIAT, Fisker, Geo, GMC, Honda, HUMMER, Isuzu, Jaguar, Lamborghini, Lincoln, Lotus, Maserati, Mercury, 
+
+1. Sort in various buckets based on same make -> Tesla, Rolls-Royce, Saab, Saturn, Scion, smart, Subaru, Suzuki, Oldsmobile, Plymouth, Ram, Pontiac, Kia, BMW, Volvo, Audi, Chevrolet, Ford, Cadillac, Acura, Lexus, Hyundai, Nissan, Buick, Infiniti, Land Rover, Mazda, MINI, Mercedes-Benz, Jeep, Mitsubishi, Toyota, Volkswagen, Porsche, Subaru, Nissan, Aston Martin, Bentley, Chevrolet, Chrysler, Daewoo, Dodge, Ferrari, FIAT, Fisker, Geo, GMC, Honda, HUMMER, Isuzu, Jaguar, Lamborghini, Lincoln, Lotus, Maserati, Mercury, 
+   and append this data in a new csv file. This file is sorted based on String A-Z. 
+2. Sort based on sellingprice 
+
+
+User Choice 
+Choose Make: Audi
+                ->>>Fetch data based on that csv file
+Find Insights: 
+    Choose Paramteres
+        Selling Price
+        "Top 5", "Top 10", "All"
+        Choose Algorithm: 
+            Bubble, Selection, Insertion, 
+
+    Output:
+    Data Presented
+    Time Complexity
+
