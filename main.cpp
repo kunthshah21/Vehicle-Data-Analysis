@@ -26,64 +26,6 @@ struct CarData {
     string saleDate;
 };
 
-// Define a node structure for the Singly Linked List
-struct Node {
-    CarData data;
-    Node* next;
-};
-
-// Define a class for the Singly Linked List
-class SLL {
-public:
-    SLL() : head(nullptr) {}
-    ~SLL() {
-        Node* current = head;
-        while (current) {
-            Node* next = current->next;
-            delete current;
-            current = next;
-        }
-        head = nullptr;
-    }
-    void insert(const CarData& data) {
-        Node* newNode = new Node{data, nullptr};
-        if (!head) {
-            head = newNode;
-        } else {
-            Node* current = head;
-            while (current->next) {
-                current = current->next;
-            }
-            current->next = newNode;
-        }
-    }
-    void display(int index) {
-        Node* current = head;
-        int currentIndex = 0;
-         while (current && currentIndex < index) {
-            current = current->next;
-            currentIndex++;
-        }
-        if (current && currentIndex == index) {
-            displayCarData(current->data);
-        } else {
-            cout << "Index out of range." << endl;
-        }
-    }
-
-    private:
-    Node* head;
-
-    void displayCarData(const CarData& data) {
-        cout << "Year: " << data.year << ", Make: " << data.make << ", Model: " << data.model
-             << ", Trim: " << data.trim << ", Body: " << data.body << ", Transmission: " << data.transmission
-             << ", VIN: " << data.vin << ", State: " << data.state << ", Condition: " << data.condition
-             << ", Odometer: " << data.odometer << ", Color: " << data.color << ", Interior: " << data.interior
-             << ", Seller: " << data.seller << ", MMR: " << data.mmr << ", Selling Price: " << data.sellingPrice
-             << ", Sale Date: " << data.saleDate << endl;
-    }
-};
-
 // Function to parse CSV line
 vector<string> parseCSVLine(const string& line) {
     vector<string> tokens;
@@ -127,18 +69,20 @@ int main() {
     string line;
     getline(file, line); // Ignore the header line
 
-    SLL carList;
+    vector<vector<string>> carDataList;
 
     while (getline(file, line)) {
         vector<string> tokens = parseCSVLine(line);
-        CarData carData = convertToCarData(tokens);
-        carList.insert(carData);
+        carDataList.push_back(tokens);
     }
-    cout << "Data from CSV file inserted into Singly Linked List successfully." << endl;
+    cout << "Data from CSV file inserted into vector of vectors successfully." << endl;
     
     int indexToDisplay = 5;
     cout << "Displaying data at index " << indexToDisplay << ":" << endl;
-    carList.display(indexToDisplay);
+    for (const auto& data : carDataList[indexToDisplay]) {
+        cout << data << " ";
+    }
+    cout << endl;
 
     return 0;
 }
