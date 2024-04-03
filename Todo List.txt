@@ -5,16 +5,28 @@
 
 
 User Choice 
+
+Main File 
+
+-----Sorting based on Make-----
 Choose Make: Audi
                 ->>>Fetch data based on that csv file
 Find Insights: 
     Choose Paramteres
-        Selling Price
+        Selling Price/condition/odometer/mmr/year  -> count for anything
         "Top 5", "Top 10", "All"
+        ascend, descend
         Choose Algorithm: 
             Bubble, Selection, Insertion, 
 
     Output:
     Data Presented
     Time Complexity
+
+
+----Overall File Sorting based on int-----
+Choose Paramteres: Selling Price/condition/odometer/mmr/year
+"Top 5", "Top 10", "All"
+        Choose Algorithm: 
+            Bubble, Selection, Insertion, 
 
