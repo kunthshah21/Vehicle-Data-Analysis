@@ -3,6 +3,9 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <unordered_map>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -87,36 +90,88 @@ vector<Car> readDataFromFile(const string& filename) {
 }
 
 // Function to display details of a car at a given index
-void displayCarDetails(const vector<Car>& cars, int index) {
-    if (index >= 0 && index < cars.size()) {
-        const Car& car = cars[index];
-        cout << "Year: " << car.year << endl;
-        cout << "Make: " << car.make << endl;
-        cout << "Model: " << car.model << endl;
-        cout << "Trim: " << car.trim << endl;
-        cout << "Body: " << car.body << endl;
-        cout << "Transmission: " << car.transmission << endl;
-        cout << "VIN: " << car.vin << endl;
-        cout << "State: " << car.state << endl;
-        cout << "Condition: " << car.condition << endl;
-        cout << "Odometer: " << car.odometer << endl;
-        cout << "Color: " << car.color << endl;
-        cout << "Interior: " << car.interior << endl;
-        cout << "Seller: " << car.seller << endl;
-        cout << "MMR: " << car.mmr << endl;
-        cout << "Selling Price: " << car.sellingPrice << endl;
-        cout << "Sale Date: " << car.saleDate << endl;
-    } else {
-        cout << "Invalid index." << endl;
+void displayCarDetails(const Car& car) {
+    cout << "Year: " << car.year << endl;
+    cout << "Make: " << car.make << endl;
+    cout << "Model: " << car.model << endl;
+    cout << "Trim: " << car.trim << endl;
+    cout << "Body: " << car.body << endl;
+    cout << "Transmission: " << car.transmission << endl;
+    cout << "VIN: " << car.vin << endl;
+    cout << "State: " << car.state << endl;
+    cout << "Condition: " << car.condition << endl;
+    cout << "Odometer: " << car.odometer << endl;
+    cout << "Color: " << car.color << endl;
+    cout << "Interior: " << car.interior << endl;
+    cout << "Seller: " << car.seller << endl;
+    cout << "MMR: " << car.mmr << endl;
+    cout << "Selling Price: " << car.sellingPrice << endl;
+    cout << "Sale Date: " << car.saleDate << endl;
+}
+
+// Function to sort cars by make using Bucket Sort
+void sortCarsByMake(vector<Car>& cars) {
+    // Create an unordered_map to hold buckets
+    unordered_map<string, vector<Car>> buckets;
+
+    // Distribute cars into buckets based on make
+    for (const Car& car : cars) {
+        buckets[car.make].push_back(car);
     }
+
+    // Sort each bucket individually
+    for (auto& pair : buckets) {
+        sort(pair.second.begin(), pair.second.end(), [](const Car& a, const Car& b) {
+            return a.make < b.make;
+        });
+    }
+
+    // Merge sorted buckets back into the original vector
+    cars.clear();
+    for (const auto& pair : buckets) {
+        cars.insert(cars.end(), pair.second.begin(), pair.second.end());
+    }
+}
+
+// Function to write cars to separate CSV files for each make
+void writeCarsToCSVFiles(const vector<Car>& cars) {
+    string folderName = "MAKE_WISE_CSV/";
+
+    unordered_map<string, ofstream> makeFiles;
+
+    // Create a separate CSV file for each make
+    for (const Car& car : cars) {
+        if (makeFiles.find(car.make) == makeFiles.end()) {
+            string filename = folderName + car.make + ".csv";
+            makeFiles[car.make].open(filename);
+            makeFiles[car.make] << "Year,Make,Model,Trim,Body,Transmission,VIN,State,Condition,Odometer,Color,Interior,Seller,MMR,SellingPrice,SaleDate\n";
+        }
+
+        makeFiles[car.make] << car.year << "," << car.make << "," << car.model << ","
+                            << car.trim << "," << car.body << "," << car.transmission << ","
+                            << car.vin << "," << car.state << "," << car.condition << ","
+                            << car.odometer << "," << car.color << "," << car.interior << ","
+                            << car.seller << "," << car.mmr << "," << car.sellingPrice << ","
+                            << car.saleDate << "\n";
+    }
+
+    // Close all file streams
+    for (auto& pair : makeFiles) {
+        pair.second.close();
+    }
+
+    cout << "Cars sorted and written to separate CSV files for each make in folder: " << folderName << endl;
 }
 
 int main() {
     // Vector to store car objects
     vector<Car> cars = readDataFromFile("car_prices.csv");
 
-    int index = 5; // Change index as needed
-    displayCarDetails(cars, index);
+    // Sort cars by make
+    sortCarsByMake(cars);
+
+    // Write sorted cars to separate CSV files for each make
+    writeCarsToCSVFiles(cars);
 
     return 0;
 }
