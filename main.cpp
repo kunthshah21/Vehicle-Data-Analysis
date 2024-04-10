@@ -5,7 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <unordered_map>
-#include <sys/stat.h>
+#include <cctype>
 
 using namespace std;
 
@@ -45,7 +45,6 @@ vector<string> split(const string& str, char delimiter) {
 vector<Car> readDataFromFile(const string& filename) {
     vector<Car> cars;
 
-    // Open the CSV file
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Error opening file." << endl;
@@ -53,14 +52,9 @@ vector<Car> readDataFromFile(const string& filename) {
     }
 
     string line;
-    getline(file, line); // Skip header line
-
-    // Read each line of the file
+    getline(file, line);
     while (getline(file, line)) {
-        // Split the line by comma
         vector<string> tokens = split(line, ',');
-
-        // Create a Car object and assign values
         Car car;
         car.year = stoi(tokens[0]);
         car.make = tokens[1];
@@ -78,18 +72,14 @@ vector<Car> readDataFromFile(const string& filename) {
         car.mmr = stof(tokens[13]);
         car.sellingPrice = stof(tokens[14]);
         car.saleDate = tokens[15];
-
-        // Push the car object into the vector
         cars.push_back(car);
     }
 
-    // Close the file
     file.close();
-
     return cars;
 }
 
-// Function to display details of a car at a given index
+// Function to display details of a car
 void displayCarDetails(const Car& car) {
     cout << "Year: " << car.year << endl;
     cout << "Make: " << car.make << endl;
@@ -109,69 +99,159 @@ void displayCarDetails(const Car& car) {
     cout << "Sale Date: " << car.saleDate << endl;
 }
 
-// Function to sort cars by make using Bucket Sort
-void sortCarsByMake(vector<Car>& cars) {
-    // Create an unordered_map to hold buckets
-    unordered_map<string, vector<Car>> buckets;
+// Function to merge two vectors of cars based on string header
+vector<Car> mergeSortString(const vector<Car>& left, const vector<Car>& right, const string& header) {
+    vector<Car> merged;
+    unsigned int leftIndex = 0, rightIndex = 0;
 
-    // Distribute cars into buckets based on make
-    for (const Car& car : cars) {
-        buckets[car.make].push_back(car);
+    while (leftIndex < left.size() && rightIndex < right.size()) {
+        if (header == "MAKE" || header == "MODEL" || header == "TRIM" || header == "BODY" ||
+            header == "TRANSMISSION" || header == "VIN" || header == "STATE" || header == "COLOR" ||
+            header == "INTERIOR" || header == "SELLER" || header == "SALEDATE") {
+            if (left[leftIndex].make + "-" + left[leftIndex].model + "-" + left[leftIndex].trim +
+                    "-" + left[leftIndex].body + "-" + left[leftIndex].transmission + "-" +
+                    left[leftIndex].vin + "-" + left[leftIndex].state + "-" + left[leftIndex].color +
+                    "-" + left[leftIndex].interior + "-" + left[leftIndex].seller + "-" +
+                    left[leftIndex].saleDate <=
+                right[rightIndex].make + "-" + right[rightIndex].model + "-" + right[rightIndex].trim +
+                    "-" + right[rightIndex].body + "-" + right[rightIndex].transmission + "-" +
+                    right[rightIndex].vin + "-" + right[rightIndex].state + "-" + right[rightIndex].color +
+                    "-" + right[rightIndex].interior + "-" + right[rightIndex].seller + "-" +
+                    right[rightIndex].saleDate) {
+                merged.push_back(left[leftIndex]);
+                leftIndex++;
+            } else {
+                merged.push_back(right[rightIndex]);
+                rightIndex++;
+            }
+        } else {
+            cerr << "Invalid header for string sorting." << endl;
+            return merged;
+        }
     }
 
-    // Sort each bucket individually
-    for (auto& pair : buckets) {
-        sort(pair.second.begin(), pair.second.end(), [](const Car& a, const Car& b) {
-            return a.make < b.make;
-        });
+    while (leftIndex < left.size()) {
+        merged.push_back(left[leftIndex]);
+        leftIndex++;
     }
 
-    // Merge sorted buckets back into the original vector
-    cars.clear();
-    for (const auto& pair : buckets) {
-        cars.insert(cars.end(), pair.second.begin(), pair.second.end());
+    while (rightIndex < right.size()) {
+        merged.push_back(right[rightIndex]);
+        rightIndex++;
+    }
+
+    return merged;
+}
+
+// Function to perform merge sort on cars based on string header
+vector<Car> mergeSortString(vector<Car>& cars, const string& header) {
+    if (cars.size() <= 1) {
+        return cars;
+    }
+
+    vector<Car> left, right;
+    unsigned int middle = cars.size() / 2;
+    for (unsigned int i = 0; i < middle; i++) {
+        left.push_back(cars[i]);
+    }
+    for (unsigned int i = middle; i < cars.size(); i++) {
+        right.push_back(cars[i]);
+    }
+
+    left = mergeSortString(left, header);
+    right = mergeSortString(right, header);
+
+    return mergeSortString(left, right, header);
+}
+
+// Function to partition the vector for quick sort on integer type
+int partition(vector<Car>& cars, const string& header, int low, int high) {
+    int pivot;
+    if (header == "YEAR") {
+        pivot = cars[high].year;
+    } else if (header == "MMR") {
+        pivot = cars[high].mmr;
+    } else if (header == "SELLINGPRICE") {
+        pivot = cars[high].sellingPrice;
+    } else if (header == "ODOMETER") {
+        pivot = cars[high].odometer;
+    } else if (header == "CONDITION") {
+        pivot = cars[high].condition;
+    } else {
+        cerr << "Invalid header for quick sort." << endl;
+        return -1;
+    }
+
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        int value;
+        if (header == "YEAR") {
+            value = cars[j].year;
+        } else if (header == "MMR") {
+            value = cars[j].mmr;
+        } else if (header == "SELLINGPRICE") {
+            value = cars[j].sellingPrice;
+        } else if (header == "ODOMETER") {
+            value = cars[j].odometer;
+        } else if (header == "CONDITION") {
+            value = cars[j].condition;
+        } else {
+            cerr << "Invalid header for quick sort." << endl;
+            return -1;
+        }
+
+        if (value < pivot) {
+            i++;
+            swap(cars[i], cars[j]);
+        }
+    }
+    swap(cars[i + 1], cars[high]);
+    return (i + 1);
+}
+
+// Function to perform quick sort on cars based on integer header
+void quickSortInteger(vector<Car>& cars, const string& header, int low, int high) {
+    if (low < high) {
+        int pi = partition(cars, header, low, high);
+
+        quickSortInteger(cars, header, low, pi - 1);
+        quickSortInteger(cars, header, pi + 1, high);
     }
 }
 
-// Function to write cars to separate CSV files for each make
-void writeCarsToCSVFiles(const vector<Car>& cars) {
-    string folderName = "MAKE_WISE_CSV/";
-
-    unordered_map<string, ofstream> makeFiles;
-
-    // Create a separate CSV file for each make
+// Function to print details of the first 500 cars
+void printFirst500Cars(const vector<Car>& cars) {
+    int count = 0;
     for (const Car& car : cars) {
-        if (makeFiles.find(car.make) == makeFiles.end()) {
-            string filename = folderName + car.make + ".csv";
-            makeFiles[car.make].open(filename);
-            makeFiles[car.make] << "Year,Make,Model,Trim,Body,Transmission,VIN,State,Condition,Odometer,Color,Interior,Seller,MMR,SellingPrice,SaleDate\n";
+        if (count >= 500) {
+            break;
         }
-
-        makeFiles[car.make] << car.year << "," << car.make << "," << car.model << ","
-                            << car.trim << "," << car.body << "," << car.transmission << ","
-                            << car.vin << "," << car.state << "," << car.condition << ","
-                            << car.odometer << "," << car.color << "," << car.interior << ","
-                            << car.seller << "," << car.mmr << "," << car.sellingPrice << ","
-                            << car.saleDate << "\n";
+        cout << "Car " << count + 1 << ":\n";
+        displayCarDetails(car);
+        cout << "-----------------------------------\n";
+        count++;
     }
-
-    // Close all file streams
-    for (auto& pair : makeFiles) {
-        pair.second.close();
-    }
-
-    cout << "Cars sorted and written to separate CSV files for each make in folder: " << folderName << endl;
 }
 
 int main() {
-    // Vector to store car objects
-    vector<Car> cars = readDataFromFile("car_prices.csv");
+    string filename = "car_prices.csv";
+    vector<Car> cars = readDataFromFile(filename);
 
-    // Sort cars by make
-    sortCarsByMake(cars);
+    cout << "Enter the header to sort the dataset (YEAR, MAKE, MODEL, TRIM, BODY, TRANSMISSION, VIN, STATE, CONDITION, ODOMETER, COLOR, INTERIOR, SELLER, MMR, SELLINGPRICE, SALEDATE): ";
+    string header;
+    cin >> header;
 
-    // Write sorted cars to separate CSV files for each make
-    writeCarsToCSVFiles(cars);
+    transform(header.begin(), header.end(), header.begin(), ::toupper);
+
+    if (header == "YEAR" || header == "MMR" || header == "SELLINGPRICE" || header == "ODOMETER" || header == "CONDITION") {
+        quickSortInteger(cars, header, 0, cars.size() - 1);
+    } else {
+        cars = mergeSortString(cars, header);
+    }
+
+    cout << "\nFirst 500 cars after sorting:\n";
+    printFirst500Cars(cars);
 
     return 0;
 }
