@@ -33,5 +33,7 @@ int main() {
         cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
     }
 
+    Color_recognizer(cars);
+
     return 0;
 }
