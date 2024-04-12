@@ -22,7 +22,7 @@ int main() {
     } else {
         cars = mergeSortString(cars, header);
     }
-
+// ?
     // cout << "\nFirst 500 cars after sorting:\n";
     // printFirst500Cars(cars);
 
