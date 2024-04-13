@@ -30,13 +30,19 @@ int main()
     // printFirst500Cars(cars);
 
     // Calculate and display average selling price by year
-    cout << "\nAverage Selling Price by Year:\n";
-    auto averageMap = calculateAverageByYear(cars);
-    for (const auto& entry : averageMap) {
-        cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
-    }
+    // cout << "\nAverage Selling Price by Year:\n";
+    // auto averageMap = calculateAverageByYear(cars);
+    // for (const auto& entry : averageMap) {
+    //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
+    // }
+    std::map<std::string, std::pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
 
-    calculateTopCarsProportions(cars);
+    // Output the results
+    for (const auto &entry : regionTransmissionCounts)
+    {
+        std::cout << "Region: " << entry.first << std::endl;
+        std::cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << std::endl;
+    }
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
 
@@ -44,7 +50,6 @@ int main()
     // Color_recognizer(cars);
 
     // Sort based on condition value
-    
 
     return 0;
 }

@@ -6,20 +6,43 @@
 #include "Sorting.h"
 using namespace std;
 
-unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts) {
+std::map<std::string, std::pair<int, int>> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
+    // Sort cars by region
+    std::vector<Car> sortedCars = mergeSortString(cars, "STATE");
+
+    // Map to store counts of manual and automatic transmissions for each state
+    std::map<std::string, std::pair<int, int>> regionTransmissionCounts;
+
+    // Iterate over sorted cars and count manual and automatic transmissions for each state
+    for (const Car& car : sortedCars) {
+        if (car.transmission == "manual") {
+            regionTransmissionCounts[car.state].first++; // Increment manual count for the state
+        } else if (car.transmission == "automatic") {
+            regionTransmissionCounts[car.state].second++; // Increment automatic count for the state
+        }
+    }
+
+    return regionTransmissionCounts;
+}
+
+unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts)
+{
     unordered_map<string, pair<int, float>> proportions;
-    for (const auto& car : topCars) {
+    for (const auto &car : topCars)
+    {
         proportions[car.make].first++;
     }
 
-    for (auto& pair : proportions) {
+    for (auto &pair : proportions)
+    {
         pair.second.second = static_cast<float>(pair.second.first) / totalCounts.at(pair.first);
     }
 
     return proportions;
 }
 
-void calculateTopCarsProportions(const vector<Car>& cars) {
+void calculateTopCarsProportions(const vector<Car> &cars)
+{
     // Sort cars based on condition value
     vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "CONDITION_VALUE", 0, sortedCars.size() - 1);
@@ -30,7 +53,8 @@ void calculateTopCarsProportions(const vector<Car>& cars) {
 
     // Calculate total counts of cars by make
     unordered_map<string, int> totalCounts;
-    for (const auto& car : cars) {
+    for (const auto &car : cars)
+    {
         totalCounts[car.make]++;
     }
 
@@ -39,22 +63,26 @@ void calculateTopCarsProportions(const vector<Car>& cars) {
 
     // Display proportions
     cout << "\nProportions of each make in the top " << topCount << " cars:\n";
-    for (const auto& pair : proportions) {
+    for (const auto &pair : proportions)
+    {
         cout << pair.first << ": " << pair.second.first << "/" << totalCounts[pair.first] << " = " << pair.second.second << endl;
     }
 }
 
-
-std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Car>& cars) {
+std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Car> &cars)
+{
     std::map<int, std::pair<float, int>> averageMap;
 
-    for (const Car& car : cars) {
+    for (const Car &car : cars)
+    {
         averageMap[car.year].first += car.sellingPrice; // Accumulate selling prices
-        averageMap[car.year].second++; // Count number of cars for each year
+        averageMap[car.year].second++;                  // Count number of cars for each year
     }
 
-    for (auto& entry : averageMap) {
-        if (entry.second.second != 0) {
+    for (auto &entry : averageMap)
+    {
+        if (entry.second.second != 0)
+        {
             entry.second.first /= entry.second.second; // Calculate average
         }
     }
@@ -63,7 +91,8 @@ std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Ca
 }
 // ?
 
-void Color_recognizer(const std::vector<Car>& cars) {
+void Color_recognizer(const std::vector<Car> &cars)
+{
     // Sort the cars vector based on selling price
     std::vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1); // ?
@@ -78,9 +107,12 @@ void Color_recognizer(const std::vector<Car>& cars) {
     std::vector<std::string> colors = {"beige", "black", "blue", "brown", "burgundy", "charcoal", "gold", "gray", "green", "lime", "off-white", "orange", "pink", "purple", "red", "silver", "turquoise", "white", "yellow"};
     std::vector<int> counts(colors.size(), 0);
 
-    for (const Car& car : topCars) {
-        for (size_t i = 0; i < colors.size(); i++) {
-            if (car.color == colors[i]) {
+    for (const Car &car : topCars)
+    {
+        for (size_t i = 0; i < colors.size(); i++)
+        {
+            if (car.color == colors[i])
+            {
                 counts[i]++;
                 break;
             }
@@ -89,7 +121,8 @@ void Color_recognizer(const std::vector<Car>& cars) {
 
     // Output color counts
     std::cout << "Color count for top 25% of cars based on selling price:\n";
-    for (size_t i = 0; i < colors.size(); i++) {
+    for (size_t i = 0; i < colors.size(); i++)
+    {
         std::cout << colors[i] << ": " << counts[i] << '\n';
     }
 }
