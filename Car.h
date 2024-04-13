@@ -24,6 +24,7 @@ public:
     float mmr;
     float sellingPrice;
     string saleDate;
+    float condition_value; // New variable to store selling price / condition
 };
 
 vector<string> split(const string& str, char delimiter);
