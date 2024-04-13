@@ -30,6 +30,7 @@ int main()
     // printFirst500Cars(cars);
 
     // Calculate and display average selling price by year
+<<<<<<< Updated upstream
     cout << "\nAverage Selling Price by Year:\n";
     auto averageMap = calculateAverageByYear(cars);
     for (const auto& entry : averageMap) {
@@ -37,6 +38,28 @@ int main()
     }
 
     calculateTopCarsProportions(cars);
+=======
+    // cout << "\nAverage Selling Price by Year:\n";
+    // auto averageMap = calculateAverageByYear(cars);
+    // for (const auto& entry : averageMap) {
+    //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
+    // }
+    // std::map<std::string, std::pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
+
+    // // Output the results
+    // for (const auto &entry : regionTransmissionCounts)
+    // {
+    //     std::cout << "Region: " << entry.first << std::endl;
+    //     std::cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << std::endl;
+    // }
+
+    std::map<std::string, float> averagePrices = calculateAveragePriceByTransmission(cars);
+
+    // Print the average prices
+    std::cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << std::endl;
+    std::cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << std::endl;
+
+>>>>>>> Stashed changes
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
 

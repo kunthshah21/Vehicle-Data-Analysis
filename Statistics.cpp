@@ -4,9 +4,71 @@
 #include <cmath>
 #include <unordered_map>
 #include "Sorting.h"
+
 using namespace std;
 
+<<<<<<< Updated upstream
 unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts) {
+=======
+
+std::map<std::string, float> calculateAveragePriceByTransmission(const std::vector<Car>& cars) {
+    // Separate cars based on transmission type
+    std::vector<Car> automaticCars;
+    std::vector<Car> manualCars;
+    
+    for (const Car& car : cars) {
+        if (car.transmission == "automatic") {
+            automaticCars.push_back(car);
+        } else if (car.transmission == "manual") {
+            manualCars.push_back(car);
+        }
+    }
+
+    // Calculate average selling price for automatic cars
+    float totalAutomaticPrice = 0.0;
+    for (const Car& car : automaticCars) {
+        totalAutomaticPrice += car.sellingPrice;
+    }
+    float averageAutomaticPrice = automaticCars.empty() ? 0.0 : totalAutomaticPrice / automaticCars.size();
+
+    // Calculate average selling price for manual cars
+    float totalManualPrice = 0.0;
+    for (const Car& car : manualCars) {
+        totalManualPrice += car.sellingPrice;
+    }
+    float averageManualPrice = manualCars.empty() ? 0.0 : totalManualPrice / manualCars.size();
+
+    // Store average prices in a map
+    std::map<std::string, float> averagePrices;
+    averagePrices["AUTOMATIC"] = averageAutomaticPrice;
+    averagePrices["MANUAL"] = averageManualPrice;
+
+    return averagePrices;
+}
+
+
+std::map<std::string, std::pair<int, int>> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
+    // Sort cars by region
+    std::vector<Car> sortedCars = mergeSortString(cars, "STATE");
+
+    // Map to store counts of manual and automatic transmissions for each state
+    std::map<std::string, std::pair<int, int>> regionTransmissionCounts;
+
+    // Iterate over sorted cars and count manual and automatic transmissions for each state
+    for (const Car& car : sortedCars) {
+        if (car.transmission == "manual") {
+            regionTransmissionCounts[car.state].first++; // Increment manual count for the state
+        } else if (car.transmission == "automatic") {
+            regionTransmissionCounts[car.state].second++; // Increment automatic count for the state
+        }
+    }
+
+    return regionTransmissionCounts;
+}
+
+unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts)
+{
+>>>>>>> Stashed changes
     unordered_map<string, pair<int, float>> proportions;
     for (const auto& car : topCars) {
         proportions[car.make].first++;
