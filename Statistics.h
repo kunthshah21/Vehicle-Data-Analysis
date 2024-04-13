@@ -4,7 +4,10 @@
 #include "Car.h"
 #include <vector>
 #include <map>
+#include <unordered_map>
 
+unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts);
+void calculateTopCarsProportions(const vector<Car>& cars);
 std::map<int, std::pair<float, int> > calculateAverageByYear(const std::vector<Car>& cars);
 void Color_recognizer(const std::vector<Car>& cars);
 

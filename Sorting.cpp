@@ -101,17 +101,30 @@ void merge(vector<Car>& cars, const string& header, int left, int middle, int ri
         } else if (header == "CONDITION") {
             value1 = L[i].condition;
             value2 = R[j].condition;
+        } else if (header == "CONDITION_VALUE") {
+            value1 = L[i].condition_value;
+            value2 = R[j].condition_value;
         } else {
             cerr << "Invalid header for merge sort." << endl;
             return;
         }
 
-        if (value1 <= value2) {
-            cars[k] = L[i];
-            i++;
+        if (header == "CONDITION_VALUE") {
+            if (value1 >= value2) { // Change the comparison to sort in descending order
+                cars[k] = L[i];
+                i++;
+            } else {
+                cars[k] = R[j];
+                j++;
+            }
         } else {
-            cars[k] = R[j];
-            j++;
+            if (value1 <= value2) { // Original comparison for other headers to sort in ascending order
+                cars[k] = L[i];
+                i++;
+            } else {
+                cars[k] = R[j];
+                j++;
+            }
         }
         k++;
     }

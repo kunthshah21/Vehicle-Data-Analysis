@@ -45,6 +45,7 @@ vector<Car> readDataFromFile(const string& filename) {
         car.mmr = stof(tokens[13]);
         car.sellingPrice = stof(tokens[14]);
         car.saleDate = tokens[15];
+        car.condition_value = car.sellingPrice / car.condition; // Calculate condition value
         cars.push_back(car);
     }
 
@@ -69,6 +70,7 @@ void displayCarDetails(const Car& car) {
     cout << "MMR: " << car.mmr << endl;
     cout << "Selling Price: " << car.sellingPrice << endl;
     cout << "Sale Date: " << car.saleDate << endl;
+    cout << "Condition Value: " << car.condition_value << endl; // Display condition value
 }
 
 void printFirst500Cars(const vector<Car>& cars) {
