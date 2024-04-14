@@ -60,6 +60,8 @@ int main()
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
 
+    calculateTopCarsProportions(cars);
+
     // Color Recognizer
     // Color_recognizer(cars);
 
@@ -75,17 +77,6 @@ int main()
 
     //countBestSellingModelByMake(cars);
 
-    std::vector<StateTransmissionCount> result = sortAndCountByRegionAndTransmission(cars);
-
-    // Display the result
-    for (const auto &count : result)
-    {
-        std::cout << "State: " << count.state << std::endl;
-        std::cout << "Manual Count: " << count.manualCount << std::endl;
-        std::cout << "Automatic Count: " << count.automaticCount << std::endl;
-        // Calculate and display percentage if needed
-        std::cout << std::endl;
-    }
 
     return 0;
 }

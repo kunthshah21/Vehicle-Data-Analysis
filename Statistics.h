@@ -11,13 +11,6 @@ struct RegionTransmissionCounts
     int automaticCount = 0;
 };
 
-struct StateTransmissionCount {
-    std::string state;
-    int manualCount;
-    int automaticCount;
-};
-
-std::vector<StateTransmissionCount> sortAndCountByRegionAndTransmission(std::vector<Car>& cars);
 void countBestSellingModelByMake(vector<Car>& cars);
 pair<float, float> calculateAveragePriceByTransmission(const vector<Car>& cars);
 unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts);
