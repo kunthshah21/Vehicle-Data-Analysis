@@ -63,53 +63,6 @@ void sortAndCountByRegionAndTransmission(vector<Car>& cars) {
     }
 }
 
-// void sortAndCountByRegionAndTransmission(vector<Car>& cars) {
-//     // Sort cars by region
-//     mergeSortString(cars, "STATE");
-
-//     // Initialize regionTransmissionCounts with empty TransmissionCounts objects
-//     vector<TransmissionCounts> regionTransmissionCounts;
-//     for (const Car& car : cars) {
-//         bool found = false;
-//         for (const auto& counts : regionTransmissionCounts) {
-//             if (counts.state == car.state) {
-//                 found = true;
-//                 break;
-//             }
-//         }
-//         if (!found) {
-//             regionTransmissionCounts.push_back({car.state, 0, 0});
-//         }
-//     }
-
-//     // Iterate over sorted cars and count manual and automatic transmissions for each region
-//     for (const Car& car : cars) {
-//         for (auto& counts : regionTransmissionCounts) {
-//             if (counts.state == car.state) {
-//                 if (car.transmission == "manual") {
-//                     counts.manualCount++;
-//                 } else if (car.transmission == "automatic") {
-//                     counts.automaticCount++;
-//                 }
-//                 break;
-//             }
-//         }
-//     }
-
-//     // Calculate total transmissions for each region
-//     for (auto& counts : regionTransmissionCounts) {
-//         int totalTransmissions = counts.manualCount + counts.automaticCount;
-//         // Convert counts to percentages
-//         counts.manualCount = (totalTransmissions == 0) ? 0 : (counts.manualCount * 100) / totalTransmissions;
-//         counts.automaticCount = (totalTransmissions == 0) ? 0 : (counts.automaticCount * 100) / totalTransmissions;
-//     }
-
-//     // Output percentages of manual and automatic transmissions for each region
-//     cout << "Region\tManual(%)\tAutomatic(%)\n";
-//     for (const auto& counts : regionTransmissionCounts) {
-//         cout << counts.state << "\t" << counts.manualCount << "%\t" << counts.automaticCount << "%\n";
-//     }
-// }
 
 void countBestSellingModelByMake(vector<Car>& cars) {
     // Sort cars by make
@@ -193,25 +146,6 @@ pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
     return make_pair(averageAutomaticPrice, averageManualPrice);
 }
 
-// std::map<std::string, std::pair<int, int>> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
-//     // Sort cars by region
-//     std::vector<Car> sortedCars = mergeSortString(cars, "STATE");
-
-//     // Map to store counts of manual and automatic transmissions for each state
-//     std::map<std::string, std::pair<int, int>> regionTransmissionCounts;
-
-//     // Iterate over sorted cars and count manual and automatic transmissions for each state
-//     for (const Car& car : sortedCars) {
-//         if (car.transmission == "manual") {
-//             regionTransmissionCounts[car.state].first++; // Increment manual count for the state
-//         } else if (car.transmission == "automatic") {
-//             regionTransmissionCounts[car.state].second++; // Increment automatic count for the state
-//         }
-//     }
-
-//     return regionTransmissionCounts;
-// }
-
 unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts)
 {
     unordered_map<string, pair<int, float>> proportions;
@@ -256,6 +190,12 @@ void calculateTopCarsProportions(const vector<Car> &cars)
     }
 }
 
+struct YearData {
+    int year;
+    float totalSellingPrice;
+    int carCount;
+};
+
 std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Car> &cars)
 {
     std::map<int, std::pair<float, int>> averageMap;
@@ -276,7 +216,6 @@ std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Ca
 
     return averageMap;
 }
-// ?
 
 void Color_recognizer(const std::vector<Car> &cars)
 {

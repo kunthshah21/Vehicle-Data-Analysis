@@ -21,4 +21,3 @@ void Color_recognizer(const std::vector<Car>& cars);
 void Interior_recognizer(const std::vector<Car>& cars);
 
 #endif
-// ?

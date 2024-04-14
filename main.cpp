@@ -62,7 +62,8 @@ int main()
 
     // calculateTopCarsProportions(cars);
 
-    sortAndCountByRegionAndTransmission(cars);
+    // sortAndCountByRegionAndTransmission(cars);
+    // calculateAverageByYear(cars);
 
     // Color Recognizer
     // Color_recognizer(cars);
@@ -77,8 +78,10 @@ int main()
     // cout << "Average price for automatic transmission: $" << averagePrices.first << endl;
     // cout << "Average price for manual transmission: $" << averagePrices.second << endl;
 
-    //countBestSellingModelByMake(cars);
+    // countBestSellingModelByMake(cars);
 
-
+//    quickSortString(cars, "MAKE");
+    selectionSortInteger(cars,"YEAR");
+    printFirst500Cars(cars);
     return 0;
 }

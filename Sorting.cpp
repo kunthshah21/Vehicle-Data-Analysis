@@ -151,3 +151,111 @@ void mergeSortInteger(vector<Car>& cars, const string& header, int left, int rig
     mergeSortInteger(cars, header, middle + 1, right);
     merge(cars, header, left, middle, right);
 }
+
+int partition(vector<Car>& cars, const string& header, int low, int high) {
+    string pivot;
+    if (header == "MAKE" || header == "MODEL" || header == "TRIM" || header == "BODY" ||
+        header == "TRANSMISSION" || header == "VIN" || header == "STATE" || header == "COLOR" ||
+        header == "INTERIOR" || header == "SELLER" || header == "SALEDATE") {
+        pivot = cars[high].make + "-" + cars[high].model + "-" + cars[high].trim +
+                "-" + cars[high].body + "-" + cars[high].transmission + "-" +
+                cars[high].vin + "-" + cars[high].state + "-" + cars[high].color +
+                "-" + cars[high].interior + "-" + cars[high].seller + "-" +
+                cars[high].saleDate;
+    } else {
+        cerr << "Invalid header for quick sort." << endl;
+        return -1;
+    }
+
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        string current;
+        if (header == "MAKE" || header == "MODEL" || header == "TRIM" || header == "BODY" ||
+            header == "TRANSMISSION" || header == "VIN" || header == "STATE" || header == "COLOR" ||
+            header == "INTERIOR" || header == "SELLER" || header == "SALEDATE") {
+            current = cars[j].make + "-" + cars[j].model + "-" + cars[j].trim +
+                      "-" + cars[j].body + "-" + cars[j].transmission + "-" +
+                      cars[j].vin + "-" + cars[j].state + "-" + cars[j].color +
+                      "-" + cars[j].interior + "-" + cars[j].seller + "-" +
+                      cars[j].saleDate;
+        } else {
+            cerr << "Invalid header for quick sort." << endl;
+            return -1;
+        }
+
+        if (current <= pivot) {
+            i++;
+            swap(cars[i], cars[j]);
+        }
+    }
+    swap(cars[i + 1], cars[high]);
+    return (i + 1);
+}
+
+void quickSortString(vector<Car>& cars, const string& header, int low, int high) {
+    if (low < high) {
+        int pi = partition(cars, header, low, high);
+        quickSortString(cars, header, low, pi - 1);
+        quickSortString(cars, header, pi + 1, high);
+    }
+}
+
+void quickSortString(vector<Car>& cars, const string& header) {
+    int n = cars.size();
+    quickSortString(cars, header, 0, n - 1);
+}
+
+int findMinIndex(vector<Car>& cars, const string& header, int start) {
+    int minIndex = start;
+    int minValue;
+    if (header == "YEAR") {
+        minValue = cars[start].year;
+    } else if (header == "MMR") {
+        minValue = cars[start].mmr;
+    } else if (header == "SELLINGPRICE") {
+        minValue = cars[start].sellingPrice;
+    } else if (header == "ODOMETER") {
+        minValue = cars[start].odometer;
+    } else if (header == "CONDITION") {
+        minValue = cars[start].condition;
+    } else if (header == "CONDITION_VALUE") {
+        minValue = cars[start].condition_value;
+    } else {
+        cerr << "Invalid header for selection sort." << endl;
+        return -1;
+    }
+
+    for (int i = start + 1; i < cars.size(); i++) {
+        int currentValue;
+        if (header == "YEAR") {
+            currentValue = cars[i].year;
+        } else if (header == "MMR") {
+            currentValue = cars[i].mmr;
+        } else if (header == "SELLINGPRICE") {
+            currentValue = cars[i].sellingPrice;
+        } else if (header == "ODOMETER") {
+            currentValue = cars[i].odometer;
+        } else if (header == "CONDITION") {
+            currentValue = cars[i].condition;
+        } else if (header == "CONDITION_VALUE") {
+            currentValue = cars[i].condition_value;
+        } else {
+            cerr << "Invalid header for selection sort." << endl;
+            return -1;
+        }
+
+        if (currentValue < minValue) {
+            minIndex = i;
+            minValue = currentValue;
+        }
+    }
+    return minIndex;
+}
+
+void selectionSortInteger(vector<Car>& cars, const string& header) {
+    for (int i = 0; i < cars.size() - 1; i++) {
+        int minIndex = findMinIndex(cars, header, i);
+        swap(cars[i], cars[minIndex]);
+    }
+}
