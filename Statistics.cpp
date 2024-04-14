@@ -11,44 +11,6 @@ using namespace std;
 #include <string>
 #include "Car.h"
 
-
-std::vector<StateTransmissionCount> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
-    // Sort cars by region (state)
-    mergeSortString(cars, "STATE");
-
-    std::vector<StateTransmissionCount> stateCounts;
-    std::string currentState = "";
-    int manualCount = 0;
-    int automaticCount = 0;
-
-    // Iterate over sorted cars and count manual and automatic transmissions for each state
-    for (const Car& car : cars) {
-        if (car.state != currentState) {
-            // Store counts for previous state
-            if (!currentState.empty()) {
-                stateCounts.push_back({currentState, manualCount, automaticCount});
-            }
-            // Initialize counts for the new state
-            currentState = car.state;
-            manualCount = 0;
-            automaticCount = 0;
-        }
-
-        if (car.transmission == "manual") {
-            manualCount++; // Increment manual count for the state
-        } else if (car.transmission == "automatic") {
-            automaticCount++; // Increment automatic count for the state
-        }
-    }
-
-    // Store counts for the last state
-    if (!currentState.empty()) {
-        stateCounts.push_back({currentState, manualCount, automaticCount});
-    }
-
-    return stateCounts;
-}
-
 void countBestSellingModelByMake(vector<Car>& cars) {
     // Sort cars by make
     vector<Car> sortedCars = mergeSortString(cars, "MAKE");
@@ -173,7 +135,7 @@ void calculateTopCarsProportions(const vector<Car> &cars)
     mergeSortInteger(sortedCars, "CONDITION_VALUE", 0, sortedCars.size() - 1);
 
     // Get top 3000 cars
-    int topCount = 3000;
+    int topCount = 118080;
     vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + min(topCount, static_cast<int>(sortedCars.size())));
 
     // Calculate total counts of cars by make
