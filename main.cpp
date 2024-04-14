@@ -63,10 +63,29 @@ int main()
     // Color Recognizer
     // Color_recognizer(cars);
 
-    Interior_recognizer(cars);
+    // Interior_recognizer(cars);
 
     // Sort based on condition value
-    
+
+    // pair<float, float> averagePrices = calculateAveragePriceByTransmission(cars);
+
+    // // Print the average prices for automatic and manual transmissions
+    // cout << "Average price for automatic transmission: $" << averagePrices.first << endl;
+    // cout << "Average price for manual transmission: $" << averagePrices.second << endl;
+
+    //countBestSellingModelByMake(cars);
+
+    std::vector<StateTransmissionCount> result = sortAndCountByRegionAndTransmission(cars);
+
+    // Display the result
+    for (const auto &count : result)
+    {
+        std::cout << "State: " << count.state << std::endl;
+        std::cout << "Manual Count: " << count.manualCount << std::endl;
+        std::cout << "Automatic Count: " << count.automaticCount << std::endl;
+        // Calculate and display percentage if needed
+        std::cout << std::endl;
+    }
 
     return 0;
 }
