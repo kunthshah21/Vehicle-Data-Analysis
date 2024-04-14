@@ -60,7 +60,9 @@ int main()
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
 
-    calculateTopCarsProportions(cars);
+    // calculateTopCarsProportions(cars);
+
+    sortAndCountByRegionAndTransmission(cars);
 
     // Color Recognizer
     // Color_recognizer(cars);
