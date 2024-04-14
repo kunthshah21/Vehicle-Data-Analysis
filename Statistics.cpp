@@ -180,7 +180,6 @@ void customSortProportions(vector<pair<string, pair<int, float>>> &proportions) 
 
 void calculateTopCarsProportions(const vector<Car> &cars)
 {
-    // Get top 3000 cars
     int topCount = 118080;
     vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "CONDITION_VALUE", 0, sortedCars.size() - 1);
