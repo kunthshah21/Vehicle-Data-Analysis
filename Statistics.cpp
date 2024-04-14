@@ -190,12 +190,6 @@ void calculateTopCarsProportions(const vector<Car> &cars)
     }
 }
 
-struct YearData {
-    int year;
-    float totalSellingPrice;
-    int carCount;
-};
-
 std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Car> &cars)
 {
     std::map<int, std::pair<float, int>> averageMap;
