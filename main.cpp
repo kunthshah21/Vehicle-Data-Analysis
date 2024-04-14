@@ -54,17 +54,6 @@ int main()
     // -----------------------------------------------------------
     // ------------------ Condition Value ------------------------
     // -----------------------------------------------------------
-    // for (const auto &entry : regionTransmissionCounts)
-    // {
-    //     std::cout << "Region: " << entry.first << std::endl;
-    //     std::cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << std::endl;
-    // }
-
-    // std::map<std::string, float> averagePrices = calculateAveragePriceByTransmission(cars);
-
-    // // Print the average prices
-    // std::cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << std::endl;
-    // std::cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << std::endl;
 
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
@@ -73,13 +62,10 @@ int main()
 
 
     // -----------------------------------------------------------
-    // ------------------ Region wise Transmission----------------
+    // ------------------ Best Selling Models --------------------
     // -----------------------------------------------------------
-    // sortAndCountByRegionAndTransmission(cars);
 
-    // calculateAverageByYear(cars);
-
-
+    // countBestSellingModelByMake(cars);
 
     // -----------------------------------------------------------
     // ------------------ Color Recognizer -----------------------
@@ -88,21 +74,22 @@ int main()
     // Color_recognizer(cars);
     // Interior_recognizer(cars);
 
+    // -----------------------------------------------------------
+    // ------------------ Region wise Transmission----------------
+    // -----------------------------------------------------------
+    
+    // sortAndCountByRegionAndTransmission(cars);
 
     // -----------------------------------------------------------
     // --------------- Average Price for At/MT Cars --------------
     // -----------------------------------------------------------
 
-    pair<float, float> averages = calculateAveragePriceByTransmission(cars);
+    // pair<float, float> averages = calculateAveragePriceByTransmission(cars);
 
-    // // Print the average prices for automatic and manual transmissions
     // cout << "Average price for automatic transmission: $" << averagePrices.first << endl;
     // cout << "Average price for manual transmission: $" << averagePrices.second << endl;
 
     //countBestSellingModelByMake(cars);
 
-    sortAndCountByRegionAndTransmission(cars);
 
-
-    return 0;
 }

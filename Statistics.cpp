@@ -110,7 +110,7 @@ void countBestSellingModelByMake(vector<Car> &cars)
             }
         }
 
-        cout << "Best-selling model for " << currentMake << ": " << bestSellingModel << endl;
+        cout << currentMake << ": " << bestSellingModel << endl;
 
         currentIndex = endIndex;
     }
