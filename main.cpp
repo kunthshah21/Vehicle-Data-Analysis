@@ -43,29 +43,28 @@ int main()
     //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
     // }
 
-
     // calculateTopCarsProportions(cars);
     // cout << "\nAverage Selling Price by Year:\n";
     // auto averageMap = calculateAverageByYear(cars);
     // for (const auto& entry : averageMap) {
     //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
     // }
-    // std::map<std::string, std::pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
+    // map<string, pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
 
     // -----------------------------------------------------------
     // ------------------ Transmission Type-----------------------
     // -----------------------------------------------------------
     // for (const auto &entry : regionTransmissionCounts)
     // {
-    //     std::cout << "Region: " << entry.first << std::endl;
-    //     std::cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << std::endl;
+    //     cout << "Region: " << entry.first << endl;
+    //     cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << endl;
     // }
 
-    // std::map<std::string, float> averagePrices = calculateAveragePriceByTransmission(cars);
+    // map<string, float> averagePrices = calculateAveragePriceByTransmission(cars);
 
     // // Print the average prices
-    // std::cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << std::endl;
-    // std::cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << std::endl;
+    // cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << endl;
+    // cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << endl;
 
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
@@ -74,7 +73,7 @@ int main()
 
     // sortAndCountByRegionAndTransmission(cars);
 
-   // calculateAverageByYear(cars);
+    // calculateAverageByYear(cars);
 
     // Color Recognizer
     // Color_recognizer(cars);
@@ -89,13 +88,12 @@ int main()
     // cout << "Average price for automatic transmission: $" << averagePrices.first << endl;
     // cout << "Average price for manual transmission: $" << averagePrices.second << endl;
 
-  
-  //countBestSellingModelByMake(cars);
+    // countBestSellingModelByMake(cars);
 
     // sortAndCountByRegionAndTransmission(cars);
 
-//    quickSortString(cars, "MAKE");
-    selectionSortInteger(cars,"YEAR");
+    //    quickSortString(cars, "MAKE");
+    selectionSortInteger(cars, "YEAR");
     printFirst500Cars(cars);
     return 0;
 }
