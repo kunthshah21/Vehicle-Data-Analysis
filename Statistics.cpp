@@ -213,6 +213,7 @@ void calculateTopCarsProportions(const vector<Car> &cars)
 
 
 
+
 void Color_recognizer(const std::vector<Car> &cars)
 {
     // Sort the cars vector based on selling price
