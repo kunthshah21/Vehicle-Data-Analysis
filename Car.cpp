@@ -5,28 +5,33 @@
 
 using namespace std;
 
-vector<string> split(const string& str, char delimiter) {
+vector<string> split(const string &str, char delimiter)
+{
     vector<string> tokens;
     string token;
     istringstream tokenStream(str);
-    while (getline(tokenStream, token, delimiter)) {
+    while (getline(tokenStream, token, delimiter))
+    {
         tokens.push_back(token);
     }
     return tokens;
 }
 
-vector<Car> readDataFromFile(const string& filename) {
+vector<Car> readDataFromFile(const string &filename)
+{
     vector<Car> cars;
 
     ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         cout << "Error opening file." << endl;
         return cars;
     }
 
     string line;
     getline(file, line);
-    while (getline(file, line)) {
+    while (getline(file, line))
+    {
         vector<string> tokens = split(line, ',');
         Car car;
         car.year = stoi(tokens[0]);
@@ -53,7 +58,8 @@ vector<Car> readDataFromFile(const string& filename) {
     return cars;
 }
 
-void displayCarDetails(const Car& car) {
+void displayCarDetails(const Car &car)
+{
     cout << "Year: " << car.year << endl;
     cout << "Make: " << car.make << endl;
     cout << "Model: " << car.model << endl;
@@ -73,10 +79,13 @@ void displayCarDetails(const Car& car) {
     cout << "Condition Value: " << car.condition_value << endl; // Display condition value
 }
 
-void printFirst500Cars(const vector<Car>& cars) {
+void printFirst500Cars(const vector<Car> &cars)
+{
     int count = 0;
-    for (const Car& car : cars) {
-        if (count >= 500) {
+    for (const Car &car : cars)
+    {
+        if (count >= 500)
+        {
             break;
         }
         cout << "Car " << count + 1 << ":\n";

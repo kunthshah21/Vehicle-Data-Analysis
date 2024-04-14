@@ -6,7 +6,8 @@
 
 using namespace std;
 
-class Car {
+class Car
+{
 public:
     int year;
     string make;
@@ -27,9 +28,9 @@ public:
     float condition_value; // New variable to store selling price / condition
 };
 
-vector<string> split(const string& str, char delimiter);
-vector<Car> readDataFromFile(const string& filename);
-void displayCarDetails(const Car& car);
-void printFirst500Cars(const vector<Car>& cars);
+vector<string> split(const string &str, char delimiter);
+vector<Car> readDataFromFile(const string &filename);
+void displayCarDetails(const Car &car);
+void printFirst500Cars(const vector<Car> &cars);
 
 #endif

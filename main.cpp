@@ -43,18 +43,32 @@ int main()
     //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
     // }
 
-
     // calculateTopCarsProportions(cars);
     // cout << "\nAverage Selling Price by Year:\n";
     // auto averageMap = calculateAverageByYear(cars);
     // for (const auto& entry : averageMap) {
     //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
     // }
-    // std::map<std::string, std::pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
+    // map<string, pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
 
     // -----------------------------------------------------------
     // ------------------ Condition Value ------------------------
     // -----------------------------------------------------------
+    // for (const auto &entry : regionTransmissionCounts)
+    // {
+    //     std::cout << "Region: " << entry.first << std::endl;
+    //     std::cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << std::endl;
+    // }
+
+    // std::map<std::string, float> averagePrices = calculateAveragePriceByTransmission(cars);
+
+    // // Print the average prices
+    // std::cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << std::endl;
+    // std::cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << std::endl;
+
+    // cout << "\nCars sorted based on condition value:\n";
+    // printFirst500Cars(cars);
+
     // calculateTopCarsProportions(cars);
 
 
@@ -62,6 +76,8 @@ int main()
     // ------------------ Region wise Transmission----------------
     // -----------------------------------------------------------
     // sortAndCountByRegionAndTransmission(cars);
+
+    // calculateAverageByYear(cars);
 
 
 
@@ -79,6 +95,14 @@ int main()
 
     pair<float, float> averages = calculateAveragePriceByTransmission(cars);
 
-    cout << "Average selling price for automatic cars: $" << averages.first << endl;
-    cout << "Average selling price for manual cars: $" << averages.second << endl;
+    // // Print the average prices for automatic and manual transmissions
+    // cout << "Average price for automatic transmission: $" << averagePrices.first << endl;
+    // cout << "Average price for manual transmission: $" << averagePrices.second << endl;
+
+    //countBestSellingModelByMake(cars);
+
+    sortAndCountByRegionAndTransmission(cars);
+
+
+    return 0;
 }

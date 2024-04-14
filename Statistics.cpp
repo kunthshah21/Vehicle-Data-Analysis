@@ -12,38 +12,48 @@ using namespace std;
 #include <vector>
 #include <string>
 
-struct TransmissionCounts {
+struct TransmissionCounts
+{
     string state;
     int manualCount;
     int automaticCount;
 };
 
-void sortAndCountByRegionAndTransmission(vector<Car>& cars) {
-    // Sort cars by region
+// Function to sort cars by region and count manual and automatic transmissions for each region
+void sortAndCountByRegionAndTransmission(vector<Car> &cars)
+{
     mergeSortString(cars, "STATE");
 
-    // Initialize regionTransmissionCounts with empty TransmissionCounts objects
     vector<TransmissionCounts> regionTransmissionCounts;
-    for (const Car& car : cars) {
+    for (const Car &car : cars)
+    {
         bool found = false;
-        for (const auto& counts : regionTransmissionCounts) {
-            if (counts.state == car.state) {
+        for (const auto &counts : regionTransmissionCounts)
+        {
+            if (counts.state == car.state)
+            {
                 found = true;
                 break;
             }
         }
-        if (!found) {
+        if (!found)
+        {
             regionTransmissionCounts.push_back({car.state, 0, 0});
         }
     }
 
-    // Iterate over sorted cars and count manual and automatic transmissions for each region
-    for (const Car& car : cars) {
-        for (auto& counts : regionTransmissionCounts) {
-            if (counts.state == car.state) {
-                if (car.transmission == "manual") {
+    for (const Car &car : cars)
+    {
+        for (auto &counts : regionTransmissionCounts)
+        {
+            if (counts.state == car.state)
+            {
+                if (car.transmission == "manual")
+                {
                     counts.manualCount++;
-                } else if (car.transmission == "automatic") {
+                }
+                else if (car.transmission == "automatic")
+                {
                     counts.automaticCount++;
                 }
                 break;
@@ -51,71 +61,64 @@ void sortAndCountByRegionAndTransmission(vector<Car>& cars) {
         }
     }
 
-    // Calculate total transmissions for each region
-    for (auto& counts : regionTransmissionCounts) {
+    for (auto &counts : regionTransmissionCounts)
+    {
         int totalTransmissions = counts.manualCount + counts.automaticCount;
-        // Adjust percentages to ensure they add up to 100
         counts.manualCount = round((counts.manualCount * 100.0) / totalTransmissions);
-        counts.automaticCount = 100 - counts.manualCount; // The remaining percentage is for automatic
+        counts.automaticCount = 100 - counts.manualCount;
     }
 
-    // Output percentages of manual and automatic transmissions for each region
     cout << "Region\tMT(%)\tAT(%)\n";
-    for (const auto& counts : regionTransmissionCounts) {
+    for (const auto &counts : regionTransmissionCounts)
+    {
         cout << counts.state << "\t" << counts.manualCount << "%\t" << counts.automaticCount << "%\n";
     }
 }
 
-
-void countBestSellingModelByMake(vector<Car>& cars) {
-    // Sort cars by make
+// Function to count the best-selling model by make
+void countBestSellingModelByMake(vector<Car> &cars)
+{
     vector<Car> sortedCars = mergeSortString(cars, "MAKE");
 
-    // Initialize variables to keep track of current make
     string currentMake = "";
     int currentIndex = 0;
 
-    // Iterate over sorted cars
-    while (currentIndex < sortedCars.size()) {
-        // Extract current make
+    while (currentIndex < sortedCars.size())
+    {
         currentMake = sortedCars[currentIndex].make;
 
-        // Find the end index of the current make
         int endIndex = currentIndex;
-        while (endIndex < sortedCars.size() && sortedCars[endIndex].make == currentMake) {
+        while (endIndex < sortedCars.size() && sortedCars[endIndex].make == currentMake)
+        {
             endIndex++;
         }
 
-        // Extract cars of the current make
         vector<Car> makeCars(sortedCars.begin() + currentIndex, sortedCars.begin() + endIndex);
 
-        // Sort cars by model
         vector<Car> sortedMakeCars = mergeSortString(makeCars, "MODEL");
 
-        // Count occurrences of each model and find the best-selling model
         unordered_map<string, int> modelCounts;
         int maxCount = 0;
         string bestSellingModel = "";
-        for (const Car& makeCar : sortedMakeCars) {
+        for (const Car &makeCar : sortedMakeCars)
+        {
             modelCounts[makeCar.model]++;
-            if (modelCounts[makeCar.model] > maxCount) {
+            if (modelCounts[makeCar.model] > maxCount)
+            {
                 maxCount = modelCounts[makeCar.model];
                 bestSellingModel = makeCar.model;
             }
         }
 
-        // Output the best-selling model for the current make
         cout << "Best-selling model for " << currentMake << ": " << bestSellingModel << endl;
 
-        // Update currentIndex to the next make
         currentIndex = endIndex;
     }
 }
 
-
+// Function to calculate the average selling price by transmission type
 pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
 {
-    // Separate cars based on transmission type
     vector<Car> automaticCars;
     vector<Car> manualCars;
 
@@ -131,7 +134,6 @@ pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
         }
     }
 
-    // Calculate average selling price for automatic cars
     float totalAutomaticPrice = 0.0;
     for (const Car &car : automaticCars)
     {
@@ -139,7 +141,6 @@ pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
     }
     float averageAutomaticPrice = automaticCars.empty() ? 0.0 : totalAutomaticPrice / automaticCars.size();
 
-    // Calculate average selling price for manual cars
     float totalManualPrice = 0.0;
     for (const Car &car : manualCars)
     {
@@ -150,6 +151,7 @@ pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
     return make_pair(averageAutomaticPrice, averageManualPrice);
 }
 
+// Function to calculate the proportions of top cars by make
 unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts)
 {
     unordered_map<string, pair<int, float>> proportions;
@@ -166,18 +168,22 @@ unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &
     return proportions;
 }
 
-void customSortProportions(vector<pair<string, pair<int, float>>> &proportions) {
-    for (int i = 0; i < proportions.size(); ++i) {
-        for (int j = i + 1; j < proportions.size(); ++j) {
-            if (proportions[i].second.second < proportions[j].second.second) {
+// Function to custom sort proportions in descending order
+void customSortProportions(vector<pair<string, pair<int, float>>> &proportions)
+{
+    for (int i = 0; i < proportions.size(); ++i)
+    {
+        for (int j = i + 1; j < proportions.size(); ++j)
+        {
+            if (proportions[i].second.second < proportions[j].second.second)
+            {
                 swap(proportions[i], proportions[j]);
             }
         }
     }
 }
 
-
-
+// Function to calculate the proportions of top cars
 void calculateTopCarsProportions(const vector<Car> &cars)
 {
     int topCount = 118080;
@@ -185,23 +191,18 @@ void calculateTopCarsProportions(const vector<Car> &cars)
     mergeSortInteger(sortedCars, "CONDITION_VALUE", 0, sortedCars.size() - 1);
     vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + min(topCount, static_cast<int>(sortedCars.size())));
 
-    // Calculate total counts of cars by make
     unordered_map<string, int> totalCounts;
     for (const auto &car : cars)
     {
         totalCounts[car.make]++;
     }
 
-    // Calculate proportions based on top counts and total counts of cars by make
     unordered_map<string, pair<int, float>> proportions = calculateProportions(topCars, topCount, totalCounts);
 
-    // Convert unordered_map to vector for sorting
     vector<pair<string, pair<int, float>>> proportionsVec(proportions.begin(), proportions.end());
 
-    // Sort proportions in descending order
     customSortProportions(proportionsVec);
 
-    // Display proportions
     cout << "\nProportions of each make in the top " << topCount << " cars (in descending order):\n";
     for (const auto &pair : proportionsVec)
     {
@@ -210,23 +211,18 @@ void calculateTopCarsProportions(const vector<Car> &cars)
     }
 }
 
-
-
-void Color_recognizer(const std::vector<Car> &cars)
+// Function to recognize the colors of top cars
+void Color_recognizer(const vector<Car> &cars)
 {
-    // Sort the cars vector based on selling price
-    std::vector<Car> sortedCars = cars;
-    mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1); // ?
+    vector<Car> sortedCars = cars;
+    mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1);
 
-    // Determine the number of cars to consider (top 25%)
-    int numCarsToConsider = std::ceil(sortedCars.size() * 0.25);
+    int numCarsToConsider = ceil(sortedCars.size() * 0.25);
 
-    // Consider only the top 25% of the sorted cars
-    std::vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + numCarsToConsider);
+    vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + numCarsToConsider);
 
-    // Now, count colors for top 25% cars
-    std::vector<std::string> colors = {"beige", "black", "blue", "brown", "burgundy", "charcoal", "gold", "gray", "green", "lime", "off-white", "orange", "pink", "purple", "red", "silver", "turquoise", "white", "yellow"};
-    std::vector<int> counts(colors.size(), 0);
+    vector<string> colors = {"beige", "black", "blue", "brown", "burgundy", "charcoal", "gold", "gray", "green", "lime", "off-white", "orange", "pink", "purple", "red", "silver", "turquoise", "white", "yellow"};
+    vector<int> counts(colors.size(), 0);
 
     for (const Car &car : topCars)
     {
@@ -240,31 +236,25 @@ void Color_recognizer(const std::vector<Car> &cars)
         }
     }
 
-    // Output color counts
-    std::cout << "Color count for top 25% of cars based on selling price:\n";
+    cout << "Color count for top 25% of cars based on selling price:\n";
     for (size_t i = 0; i < colors.size(); i++)
     {
-        std::cout << colors[i] << ": " << counts[i] << '\n';
+        cout << colors[i] << ": " << counts[i] << '\n';
     }
 }
 
-
-
-void Interior_recognizer(const std::vector<Car> &cars)
+// Function to recognize the interiors of top cars
+void Interior_recognizer(const vector<Car> &cars)
 {
-    // Sort the cars vector based on selling price
-    std::vector<Car> sortedCars = cars;
+    vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1);
 
-    // Determine the number of cars to consider (top 25%)
-    int numCarsToConsider = std::ceil(sortedCars.size() * 0.25);
+    int numCarsToConsider = ceil(sortedCars.size() * 0.25);
 
-    // Consider only the top 25% of the sorted cars
-    std::vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + numCarsToConsider);
+    vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + numCarsToConsider);
 
-    // Now, count interiors for top 25% cars
-    std::vector<std::string> interiors = {"beige", "black", "blue", "brown", "burgundy", "gold", "gray", "green", "off-white", "orange", "purple", "red", "silver", "tan", "white", "yellow"};
-    std::vector<int> counts(interiors.size(), 0);
+    vector<string> interiors = {"beige", "black", "blue", "brown", "burgundy", "gold", "gray", "green", "off-white", "orange", "purple", "red", "silver", "tan", "white", "yellow"};
+    vector<int> counts(interiors.size(), 0);
 
     for (const Car &car : topCars)
     {
@@ -278,10 +268,9 @@ void Interior_recognizer(const std::vector<Car> &cars)
         }
     }
 
-    // Output interior counts
-    std::cout << "Interior count for top 25% of cars based on selling price:\n";
+    cout << "Interior count for top 25% of cars based on selling price:\n";
     for (size_t i = 0; i < interiors.size(); i++)
     {
-        std::cout << interiors[i] << ": " << counts[i] << '\n';
+        cout << interiors[i] << ": " << counts[i] << '\n';
     }
 }

@@ -11,16 +11,14 @@ struct RegionTransmissionCounts
     int automaticCount = 0;
 };
 
-void sortAndCountByRegionAndTransmission(vector<Car>& cars);
-void countBestSellingModelByMake(vector<Car>& cars);
-pair<float, float> calculateAveragePriceByTransmission(const vector<Car>& cars);
-unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts);
-void calculateTopCarsProportions(const vector<Car>& cars);
-std::map<int, std::pair<float, int> > calculateAverageByYear(const std::vector<Car>& cars);
-void Color_recognizer(const std::vector<Car>& cars);
-void Interior_recognizer(const std::vector<Car>& cars);
+void sortAndCountByRegionAndTransmission(vector<Car> &cars);
+void countBestSellingModelByMake(vector<Car> &cars);
+pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars);
+unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts);
+void calculateTopCarsProportions(const vector<Car> &cars);
+map<int, pair<float, int>> calculateAverageByYear(const vector<Car> &cars);
+void Color_recognizer(const vector<Car> &cars);
+void Interior_recognizer(const vector<Car> &cars);
 void customSortProportions(vector<pair<string, pair<int, float>>> &proportions);
 
-
 #endif
-// ?

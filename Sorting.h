@@ -8,7 +8,9 @@
 
 using namespace std;
 
-vector<Car> mergeSortString(vector<Car>& cars, const string& header);
-void mergeSortInteger(vector<Car>& cars, const string& header, int left, int right);
-
+vector<Car> mergeSortString(vector<Car> &cars, const string &header);
+void mergeSortInteger(vector<Car> &cars, const string &header, int left, int right);
+void quickSortString(vector<Car> &cars, const string &header);
+void selectionSortInteger(vector<Car> &cars, const string &header);
 #endif
+//?
