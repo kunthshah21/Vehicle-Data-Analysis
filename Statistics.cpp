@@ -7,9 +7,7 @@
 
 using namespace std;
 
-<<<<<<< Updated upstream
-unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts) {
-=======
+unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts);
 
 std::map<std::string, float> calculateAveragePriceByTransmission(const std::vector<Car>& cars) {
     // Separate cars based on transmission type
@@ -68,7 +66,6 @@ std::map<std::string, std::pair<int, int>> sortAndCountByRegionAndTransmission(s
 
 unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts)
 {
->>>>>>> Stashed changes
     unordered_map<string, pair<int, float>> proportions;
     for (const auto& car : topCars) {
         proportions[car.make].first++;
