@@ -30,13 +30,13 @@ int main()
     // printFirst500Cars(cars);
 
     // Calculate and display average selling price by year
-    cout << "\nAverage Selling Price by Year:\n";
-    auto averageMap = calculateAverageByYear(cars);
-    for (const auto& entry : averageMap) {
-        cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
-    }
+    // cout << "\nAverage Selling Price by Year:\n";
+    // auto averageMap = calculateAverageByYear(cars);
+    // for (const auto& entry : averageMap) {
+    //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
+    // }
 
-    calculateTopCarsProportions(cars);
+    // calculateTopCarsProportions(cars);
     // cout << "\nAverage Selling Price by Year:\n";
     // auto averageMap = calculateAverageByYear(cars);
     // for (const auto& entry : averageMap) {
@@ -51,17 +51,19 @@ int main()
     //     std::cout << "Manual: " << entry.second.first << ", Automatic: " << entry.second.second << std::endl;
     // }
 
-    std::map<std::string, float> averagePrices = calculateAveragePriceByTransmission(cars);
+    // std::map<std::string, float> averagePrices = calculateAveragePriceByTransmission(cars);
 
-    // Print the average prices
-    std::cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << std::endl;
-    std::cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << std::endl;
+    // // Print the average prices
+    // std::cout << "Average price for AUTOMATIC cars: " << averagePrices["AUTOMATIC"] << std::endl;
+    // std::cout << "Average price for MANUAL cars: " << averagePrices["MANUAL"] << std::endl;
 
     // cout << "\nCars sorted based on condition value:\n";
     // printFirst500Cars(cars);
 
     // Color Recognizer
     // Color_recognizer(cars);
+
+    Interior_recognizer(cars);
 
     // Sort based on condition value
     

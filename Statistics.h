@@ -13,6 +13,8 @@ unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& 
 void calculateTopCarsProportions(const vector<Car>& cars);
 std::map<int, std::pair<float, int> > calculateAverageByYear(const std::vector<Car>& cars);
 void Color_recognizer(const std::vector<Car>& cars);
+void Interior_recognizer(const std::vector<Car>& cars);
+
 
 #endif
 // ?

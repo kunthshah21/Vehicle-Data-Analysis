@@ -152,3 +152,34 @@ void Color_recognizer(const std::vector<Car>& cars) {
         std::cout << colors[i] << ": " << counts[i] << '\n';
     }
 }
+
+void Interior_recognizer(const std::vector<Car>& cars) {
+    // Sort the cars vector based on selling price
+    std::vector<Car> sortedCars = cars;
+    mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1);
+
+    // Determine the number of cars to consider (top 25%)
+    int numCarsToConsider = std::ceil(sortedCars.size() * 0.25);
+
+    // Consider only the top 25% of the sorted cars
+    std::vector<Car> topCars(sortedCars.begin(), sortedCars.begin() + numCarsToConsider);
+
+    // Now, count interiors for top 25% cars
+    std::vector<std::string> interiors = {"beige", "black", "blue", "brown", "burgundy", "gold", "gray", "green", "off-white", "orange", "purple", "red", "silver", "tan", "white", "yellow"};
+    std::vector<int> counts(interiors.size(), 0);
+
+    for (const Car& car : topCars) {
+        for (size_t i = 0; i < interiors.size(); i++) {
+            if (car.interior == interiors[i]) {
+                counts[i]++;
+                break;
+            }
+        }
+    }
+
+    // Output interior counts
+    std::cout << "Interior count for top 25% of cars based on selling price:\n";
+    for (size_t i = 0; i < interiors.size(); i++) {
+        std::cout << interiors[i] << ": " << counts[i] << '\n';
+    }
+}
