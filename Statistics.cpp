@@ -7,78 +7,167 @@
 
 using namespace std;
 
-unordered_map<string, pair<int, float>> calculateProportions(const vector<Car>& topCars, int topCount, const unordered_map<string, int>& totalCounts);
+#include <vector>
+#include <string>
+#include "Car.h"
 
-std::map<std::string, float> calculateAveragePriceByTransmission(const std::vector<Car>& cars) {
-    // Separate cars based on transmission type
-    std::vector<Car> automaticCars;
-    std::vector<Car> manualCars;
-    
+
+std::vector<StateTransmissionCount> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
+    // Sort cars by region (state)
+    mergeSortString(cars, "STATE");
+
+    std::vector<StateTransmissionCount> stateCounts;
+    std::string currentState = "";
+    int manualCount = 0;
+    int automaticCount = 0;
+
+    // Iterate over sorted cars and count manual and automatic transmissions for each state
     for (const Car& car : cars) {
-        if (car.transmission == "automatic") {
+        if (car.state != currentState) {
+            // Store counts for previous state
+            if (!currentState.empty()) {
+                stateCounts.push_back({currentState, manualCount, automaticCount});
+            }
+            // Initialize counts for the new state
+            currentState = car.state;
+            manualCount = 0;
+            automaticCount = 0;
+        }
+
+        if (car.transmission == "manual") {
+            manualCount++; // Increment manual count for the state
+        } else if (car.transmission == "automatic") {
+            automaticCount++; // Increment automatic count for the state
+        }
+    }
+
+    // Store counts for the last state
+    if (!currentState.empty()) {
+        stateCounts.push_back({currentState, manualCount, automaticCount});
+    }
+
+    return stateCounts;
+}
+
+void countBestSellingModelByMake(vector<Car>& cars) {
+    // Sort cars by make
+    vector<Car> sortedCars = mergeSortString(cars, "MAKE");
+
+    // Initialize variables to keep track of current make
+    string currentMake = "";
+    int currentIndex = 0;
+
+    // Iterate over sorted cars
+    while (currentIndex < sortedCars.size()) {
+        // Extract current make
+        currentMake = sortedCars[currentIndex].make;
+
+        // Find the end index of the current make
+        int endIndex = currentIndex;
+        while (endIndex < sortedCars.size() && sortedCars[endIndex].make == currentMake) {
+            endIndex++;
+        }
+
+        // Extract cars of the current make
+        vector<Car> makeCars(sortedCars.begin() + currentIndex, sortedCars.begin() + endIndex);
+
+        // Sort cars by model
+        vector<Car> sortedMakeCars = mergeSortString(makeCars, "MODEL");
+
+        // Count occurrences of each model and find the best-selling model
+        unordered_map<string, int> modelCounts;
+        int maxCount = 0;
+        string bestSellingModel = "";
+        for (const Car& makeCar : sortedMakeCars) {
+            modelCounts[makeCar.model]++;
+            if (modelCounts[makeCar.model] > maxCount) {
+                maxCount = modelCounts[makeCar.model];
+                bestSellingModel = makeCar.model;
+            }
+        }
+
+        // Output the best-selling model for the current make
+        cout << "Best-selling model for " << currentMake << ": " << bestSellingModel << endl;
+
+        // Update currentIndex to the next make
+        currentIndex = endIndex;
+    }
+}
+
+pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
+{
+    // Separate cars based on transmission type
+    vector<Car> automaticCars;
+    vector<Car> manualCars;
+
+    for (const Car &car : cars)
+    {
+        if (car.transmission == "automatic")
+        {
             automaticCars.push_back(car);
-        } else if (car.transmission == "manual") {
+        }
+        else if (car.transmission == "manual")
+        {
             manualCars.push_back(car);
         }
     }
 
     // Calculate average selling price for automatic cars
     float totalAutomaticPrice = 0.0;
-    for (const Car& car : automaticCars) {
+    for (const Car &car : automaticCars)
+    {
         totalAutomaticPrice += car.sellingPrice;
     }
     float averageAutomaticPrice = automaticCars.empty() ? 0.0 : totalAutomaticPrice / automaticCars.size();
 
     // Calculate average selling price for manual cars
     float totalManualPrice = 0.0;
-    for (const Car& car : manualCars) {
+    for (const Car &car : manualCars)
+    {
         totalManualPrice += car.sellingPrice;
     }
     float averageManualPrice = manualCars.empty() ? 0.0 : totalManualPrice / manualCars.size();
 
-    // Store average prices in a map
-    std::map<std::string, float> averagePrices;
-    averagePrices["AUTOMATIC"] = averageAutomaticPrice;
-    averagePrices["MANUAL"] = averageManualPrice;
-
-    return averagePrices;
+    return make_pair(averageAutomaticPrice, averageManualPrice);
 }
 
+// std::map<std::string, std::pair<int, int>> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
+//     // Sort cars by region
+//     std::vector<Car> sortedCars = mergeSortString(cars, "STATE");
 
-std::map<std::string, std::pair<int, int>> sortAndCountByRegionAndTransmission(std::vector<Car>& cars) {
-    // Sort cars by region
-    std::vector<Car> sortedCars = mergeSortString(cars, "STATE");
+//     // Map to store counts of manual and automatic transmissions for each state
+//     std::map<std::string, std::pair<int, int>> regionTransmissionCounts;
 
-    // Map to store counts of manual and automatic transmissions for each state
-    std::map<std::string, std::pair<int, int>> regionTransmissionCounts;
+//     // Iterate over sorted cars and count manual and automatic transmissions for each state
+//     for (const Car& car : sortedCars) {
+//         if (car.transmission == "manual") {
+//             regionTransmissionCounts[car.state].first++; // Increment manual count for the state
+//         } else if (car.transmission == "automatic") {
+//             regionTransmissionCounts[car.state].second++; // Increment automatic count for the state
+//         }
+//     }
 
-    // Iterate over sorted cars and count manual and automatic transmissions for each state
-    for (const Car& car : sortedCars) {
-        if (car.transmission == "manual") {
-            regionTransmissionCounts[car.state].first++; // Increment manual count for the state
-        } else if (car.transmission == "automatic") {
-            regionTransmissionCounts[car.state].second++; // Increment automatic count for the state
-        }
-    }
-
-    return regionTransmissionCounts;
-}
+//     return regionTransmissionCounts;
+// }
 
 unordered_map<string, pair<int, float>> calculateProportions(const vector<Car> &topCars, int topCount, const unordered_map<string, int> &totalCounts)
 {
     unordered_map<string, pair<int, float>> proportions;
-    for (const auto& car : topCars) {
+    for (const auto &car : topCars)
+    {
         proportions[car.make].first++;
     }
 
-    for (auto& pair : proportions) {
+    for (auto &pair : proportions)
+    {
         pair.second.second = static_cast<float>(pair.second.first) / totalCounts.at(pair.first);
     }
 
     return proportions;
 }
 
-void calculateTopCarsProportions(const vector<Car>& cars) {
+void calculateTopCarsProportions(const vector<Car> &cars)
+{
     // Sort cars based on condition value
     vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "CONDITION_VALUE", 0, sortedCars.size() - 1);
@@ -89,7 +178,8 @@ void calculateTopCarsProportions(const vector<Car>& cars) {
 
     // Calculate total counts of cars by make
     unordered_map<string, int> totalCounts;
-    for (const auto& car : cars) {
+    for (const auto &car : cars)
+    {
         totalCounts[car.make]++;
     }
 
@@ -98,22 +188,26 @@ void calculateTopCarsProportions(const vector<Car>& cars) {
 
     // Display proportions
     cout << "\nProportions of each make in the top " << topCount << " cars:\n";
-    for (const auto& pair : proportions) {
+    for (const auto &pair : proportions)
+    {
         cout << pair.first << ": " << pair.second.first << "/" << totalCounts[pair.first] << " = " << pair.second.second << endl;
     }
 }
 
-
-std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Car>& cars) {
+std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Car> &cars)
+{
     std::map<int, std::pair<float, int>> averageMap;
 
-    for (const Car& car : cars) {
+    for (const Car &car : cars)
+    {
         averageMap[car.year].first += car.sellingPrice; // Accumulate selling prices
-        averageMap[car.year].second++; // Count number of cars for each year
+        averageMap[car.year].second++;                  // Count number of cars for each year
     }
 
-    for (auto& entry : averageMap) {
-        if (entry.second.second != 0) {
+    for (auto &entry : averageMap)
+    {
+        if (entry.second.second != 0)
+        {
             entry.second.first /= entry.second.second; // Calculate average
         }
     }
@@ -122,7 +216,8 @@ std::map<int, std::pair<float, int>> calculateAverageByYear(const std::vector<Ca
 }
 // ?
 
-void Color_recognizer(const std::vector<Car>& cars) {
+void Color_recognizer(const std::vector<Car> &cars)
+{
     // Sort the cars vector based on selling price
     std::vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1); // ?
@@ -137,9 +232,12 @@ void Color_recognizer(const std::vector<Car>& cars) {
     std::vector<std::string> colors = {"beige", "black", "blue", "brown", "burgundy", "charcoal", "gold", "gray", "green", "lime", "off-white", "orange", "pink", "purple", "red", "silver", "turquoise", "white", "yellow"};
     std::vector<int> counts(colors.size(), 0);
 
-    for (const Car& car : topCars) {
-        for (size_t i = 0; i < colors.size(); i++) {
-            if (car.color == colors[i]) {
+    for (const Car &car : topCars)
+    {
+        for (size_t i = 0; i < colors.size(); i++)
+        {
+            if (car.color == colors[i])
+            {
                 counts[i]++;
                 break;
             }
@@ -148,12 +246,14 @@ void Color_recognizer(const std::vector<Car>& cars) {
 
     // Output color counts
     std::cout << "Color count for top 25% of cars based on selling price:\n";
-    for (size_t i = 0; i < colors.size(); i++) {
+    for (size_t i = 0; i < colors.size(); i++)
+    {
         std::cout << colors[i] << ": " << counts[i] << '\n';
     }
 }
 
-void Interior_recognizer(const std::vector<Car>& cars) {
+void Interior_recognizer(const std::vector<Car> &cars)
+{
     // Sort the cars vector based on selling price
     std::vector<Car> sortedCars = cars;
     mergeSortInteger(sortedCars, "SELLINGPRICE", 0, sortedCars.size() - 1);
@@ -168,9 +268,12 @@ void Interior_recognizer(const std::vector<Car>& cars) {
     std::vector<std::string> interiors = {"beige", "black", "blue", "brown", "burgundy", "gold", "gray", "green", "off-white", "orange", "purple", "red", "silver", "tan", "white", "yellow"};
     std::vector<int> counts(interiors.size(), 0);
 
-    for (const Car& car : topCars) {
-        for (size_t i = 0; i < interiors.size(); i++) {
-            if (car.interior == interiors[i]) {
+    for (const Car &car : topCars)
+    {
+        for (size_t i = 0; i < interiors.size(); i++)
+        {
+            if (car.interior == interiors[i])
+            {
                 counts[i]++;
                 break;
             }
@@ -179,7 +282,8 @@ void Interior_recognizer(const std::vector<Car>& cars) {
 
     // Output interior counts
     std::cout << "Interior count for top 25% of cars based on selling price:\n";
-    for (size_t i = 0; i < interiors.size(); i++) {
+    for (size_t i = 0; i < interiors.size(); i++)
+    {
         std::cout << interiors[i] << ": " << counts[i] << '\n';
     }
 }
