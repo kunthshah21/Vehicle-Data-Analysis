@@ -10,6 +10,106 @@ using namespace std;
 #include <vector>
 #include <string>
 #include "Car.h"
+struct TransmissionCounts {
+    std::string state;
+    int manualCount;
+    int automaticCount;
+};
+void sortAndCountByRegionAndTransmission(vector<Car>& cars) {
+    // Sort cars by region
+    mergeSortString(cars, "STATE");
+
+    // Initialize regionTransmissionCounts with empty TransmissionCounts objects
+    vector<TransmissionCounts> regionTransmissionCounts;
+    for (const Car& car : cars) {
+        bool found = false;
+        for (const auto& counts : regionTransmissionCounts) {
+            if (counts.state == car.state) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            regionTransmissionCounts.push_back({car.state, 0, 0});
+        }
+    }
+
+    // Iterate over sorted cars and count manual and automatic transmissions for each region
+    for (const Car& car : cars) {
+        for (auto& counts : regionTransmissionCounts) {
+            if (counts.state == car.state) {
+                if (car.transmission == "manual") {
+                    counts.manualCount++;
+                } else if (car.transmission == "automatic") {
+                    counts.automaticCount++;
+                }
+                break;
+            }
+        }
+    }
+
+    // Calculate total transmissions for each region
+    for (auto& counts : regionTransmissionCounts) {
+        int totalTransmissions = counts.manualCount + counts.automaticCount;
+        // Adjust percentages to ensure they add up to 100
+        counts.manualCount = round((counts.manualCount * 100.0) / totalTransmissions);
+        counts.automaticCount = 100 - counts.manualCount; // The remaining percentage is for automatic
+    }
+
+    // Output percentages of manual and automatic transmissions for each region
+    cout << "Region\tManual(%)\tAutomatic(%)\n";
+    for (const auto& counts : regionTransmissionCounts) {
+        cout << counts.state << "\t" << counts.manualCount << "%\t" << counts.automaticCount << "%\n";
+    }
+}
+
+// void sortAndCountByRegionAndTransmission(vector<Car>& cars) {
+//     // Sort cars by region
+//     mergeSortString(cars, "STATE");
+
+//     // Initialize regionTransmissionCounts with empty TransmissionCounts objects
+//     vector<TransmissionCounts> regionTransmissionCounts;
+//     for (const Car& car : cars) {
+//         bool found = false;
+//         for (const auto& counts : regionTransmissionCounts) {
+//             if (counts.state == car.state) {
+//                 found = true;
+//                 break;
+//             }
+//         }
+//         if (!found) {
+//             regionTransmissionCounts.push_back({car.state, 0, 0});
+//         }
+//     }
+
+//     // Iterate over sorted cars and count manual and automatic transmissions for each region
+//     for (const Car& car : cars) {
+//         for (auto& counts : regionTransmissionCounts) {
+//             if (counts.state == car.state) {
+//                 if (car.transmission == "manual") {
+//                     counts.manualCount++;
+//                 } else if (car.transmission == "automatic") {
+//                     counts.automaticCount++;
+//                 }
+//                 break;
+//             }
+//         }
+//     }
+
+//     // Calculate total transmissions for each region
+//     for (auto& counts : regionTransmissionCounts) {
+//         int totalTransmissions = counts.manualCount + counts.automaticCount;
+//         // Convert counts to percentages
+//         counts.manualCount = (totalTransmissions == 0) ? 0 : (counts.manualCount * 100) / totalTransmissions;
+//         counts.automaticCount = (totalTransmissions == 0) ? 0 : (counts.automaticCount * 100) / totalTransmissions;
+//     }
+
+//     // Output percentages of manual and automatic transmissions for each region
+//     cout << "Region\tManual(%)\tAutomatic(%)\n";
+//     for (const auto& counts : regionTransmissionCounts) {
+//         cout << counts.state << "\t" << counts.manualCount << "%\t" << counts.automaticCount << "%\n";
+//     }
+// }
 
 void countBestSellingModelByMake(vector<Car>& cars) {
     // Sort cars by make
