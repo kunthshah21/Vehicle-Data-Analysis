@@ -1,9 +1,25 @@
-CC = g++
-CFLAGS = -std=c++17
-SRCS = main.cpp Statistics.cpp Sorting.cpp Car.cpp
+# Compiler
+CXX = g++
 
-main: $(SRCS)
-	$(CC) $(CFLAGS) -o $@ $^
+# Compiler flags
+CXXFLAGS = -std=c++17
 
+# Source files
+SOURCES = main.cpp Sorting.cpp Statistics.cpp Car.cpp
+
+# Executable name
+EXECUTABLE = program
+
+# Build rule
+all: $(EXECUTABLE)
+
+# Linking
+$(EXECUTABLE): $(SOURCES)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Clean rule
 clean:
-	rm -f main
+	rm -f $(EXECUTABLE)
+
+# Phony targets
+.PHONY: all clean
