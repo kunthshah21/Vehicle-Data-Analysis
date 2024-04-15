@@ -2,22 +2,11 @@
 #include <iostream>
 #include <cmath>
 #include <unordered_map>
-
+#include <vector>
+#include <string>
 #include "Statistics.h"
 #include "Car.h"
 #include "Sorting.h"
-
-using namespace std;
-
-#include <vector>
-#include <string>
-
-struct TransmissionCounts
-{
-    string state;
-    int manualCount;
-    int automaticCount;
-};
 
 // Function to sort cars by region and count manual and automatic transmissions for each region
 void sortAndCountByRegionAndTransmission(vector<Car> &cars)
@@ -76,37 +65,49 @@ void sortAndCountByRegionAndTransmission(vector<Car> &cars)
 }
 
 // Function to count the best-selling model by make
-void countBestSellingModelByMake(vector<Car> &cars)
-{
+void countBestSellingModelByMake(vector<Car> &cars) {
     vector<Car> sortedCars = mergeSortString(cars, "MAKE");
 
     string currentMake = "";
     int currentIndex = 0;
 
-    while (currentIndex < sortedCars.size())
-    {
+    while (currentIndex < sortedCars.size()) {
         currentMake = sortedCars[currentIndex].make;
 
         int endIndex = currentIndex;
-        while (endIndex < sortedCars.size() && sortedCars[endIndex].make == currentMake)
-        {
+        while (endIndex < sortedCars.size() && sortedCars[endIndex].make == currentMake) {
             endIndex++;
         }
 
         vector<Car> makeCars(sortedCars.begin() + currentIndex, sortedCars.begin() + endIndex);
 
-        vector<Car> sortedMakeCars = mergeSortString(makeCars, "MODEL");
+        vector<string> modelList;
+        vector<int> modelCounts;
 
-        unordered_map<string, int> modelCounts;
-        int maxCount = 0;
         string bestSellingModel = "";
-        for (const Car &makeCar : sortedMakeCars)
-        {
-            modelCounts[makeCar.model]++;
-            if (modelCounts[makeCar.model] > maxCount)
-            {
-                maxCount = modelCounts[makeCar.model];
-                bestSellingModel = makeCar.model;
+        int maxCount = 0;
+
+        // Find unique models and count occurrences
+        for (const Car &makeCar : makeCars) {
+            bool found = false;
+            for (size_t i = 0; i < modelList.size(); ++i) {
+                if (modelList[i] == makeCar.model) {
+                    modelCounts[i]++;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                modelList.push_back(makeCar.model);
+                modelCounts.push_back(1);
+            }
+        }
+
+        // Find the best selling model
+        for (size_t i = 0; i < modelList.size(); ++i) {
+            if (modelCounts[i] > maxCount) {
+                maxCount = modelCounts[i];
+                bestSellingModel = modelList[i];
             }
         }
 
@@ -116,20 +117,16 @@ void countBestSellingModelByMake(vector<Car> &cars)
     }
 }
 
+
 // Function to calculate the average selling price by transmission type
-pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars)
-{
+pair<float, float> calculateAveragePriceByTransmission(const vector<Car> &cars) {
     vector<Car> automaticCars;
     vector<Car> manualCars;
 
-    for (const Car &car : cars)
-    {
-        if (car.transmission == "automatic")
-        {
+    for (const Car &car : cars){
+        if (car.transmission == "automatic"){
             automaticCars.push_back(car);
-        }
-        else if (car.transmission == "manual")
-        {
+        } else if (car.transmission == "manual"){
             manualCars.push_back(car);
         }
     }
@@ -207,7 +204,7 @@ void calculateTopCarsProportions(const vector<Car> &cars)
     for (const auto &pair : proportionsVec)
     {
         cout << pair.first << ": " << pair.second.first << "/" << totalCounts[pair.first]
-             << " = " << pair.second.second << endl;
+            << " = " << pair.second.second << endl;
     }
 }
 
@@ -273,4 +270,34 @@ void Interior_recognizer(const vector<Car> &cars)
     {
         cout << interiors[i] << ": " << counts[i] << '\n';
     }
+}
+
+
+
+vector<YearData> calculateAverageByYear(const vector<Car>& cars) {
+    // Create a vector of YearData to store data for each year
+    vector<YearData> averageByYear;
+
+    // Calculate total selling price and count for each year
+    for (const Car& car : cars) {
+        bool found = false;
+        for (YearData& data : averageByYear) {
+            if (data.year == car.year) {
+                data.averageSellingPrice += car.sellingPrice;
+                data.carCount++;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            averageByYear.push_back({car.year, car.sellingPrice, 1});
+        }
+    }
+
+    // Calculate average selling price for each year
+    for (YearData& data : averageByYear) {
+        data.averageSellingPrice /= data.carCount;
+    }
+
+    return averageByYear;
 }

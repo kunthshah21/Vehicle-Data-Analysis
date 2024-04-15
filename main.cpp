@@ -38,17 +38,13 @@ int main()
     // ----------- Average selling price by year -----------------
     // -----------------------------------------------------------
     // cout << "\nAverage Selling Price by Year:\n";
-    // auto averageMap = calculateAverageByYear(cars);
-    // for (const auto& entry : averageMap) {
-    //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
+    // vector<YearData> averageByYear = calculateAverageByYear(cars);
+    // for (const YearData& data : averageByYear) {
+    //     cout << "Year: " << data.year << ", Average Selling Price: $" << data.averageSellingPrice
+    //             << ", Number of Cars: " << data.carCount << std::endl;
     // }
 
     // calculateTopCarsProportions(cars);
-    // cout << "\nAverage Selling Price by Year:\n";
-    // auto averageMap = calculateAverageByYear(cars);
-    // for (const auto& entry : averageMap) {
-    //     cout << "Year: " << entry.first << ", Average Selling Price: " << entry.second.first << ", Number of Cars: " << entry.second.second << endl;
-    // }
     // map<string, pair<int, int>> regionTransmissionCounts = sortAndCountByRegionAndTransmission(cars);
 
     // -----------------------------------------------------------
