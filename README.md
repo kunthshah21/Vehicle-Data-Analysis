@@ -8,10 +8,10 @@ Data Set Link: https://www.kaggle.com/datasets/syedanwarafridi/vehicle-sales-dat
 
 We perform the following Data Analysis: 
 
-Sorting for Top Selling Cars
-Sort by Most popular Make of the car
-Impact of Color on Selling Price
-Impact of Interior Color on Selling Price
-Impact of Condition on Selling Price
-Imapct of Mileage on Selling Price
-Highest Selling transmission type - per region
+1. Sorting for Top Selling Cars
+2. Sort by Most popular Make of the car
+3. Impact of Color on Selling Price
+4. Impact of Interior Color on Selling Price
+5. Impact of Condition on Selling Price
+6. Imapct of Mileage on Selling Price
+7. Highest Selling transmission type - per region
